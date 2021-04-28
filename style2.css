@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: white;
+    font-family: 'Zen Dots', cursive;
+}
+
+body{
+    background-color:rgba(0, 0, 0, 0.9); 
+    height: 100vh;
+    width: 100%;
+}
+
+h1{
+    margin:30px;
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(230, 27, 27);
+}
+
+.similarFilms{
+    margin: 10px;
+    border-radius: 10px;
+    width: 90%; 
+    height:50%;
+    background-color: white;
+    overflow-y: auto;
+}
+.movie_img{
+    float: left;
+    padding: 15px 15px 15px 15px;
+}
