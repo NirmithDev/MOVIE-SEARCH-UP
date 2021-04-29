@@ -53,14 +53,13 @@ div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255,
     for a in chosen[0].Writer
         | #{a}, 
   br
-  br
   .Awards(style='margin: 10px;')
     em.Nam(style='font-size:xx-large;') Awards: 
     br
     for a in chosen[0].Awards
         | #{a}
   br
-br
+
 // Display movies that have similar attachements to it
 h2(style='margin: 10px;') SIMILAR MOVIES BE LIKE  
 .similarFilms

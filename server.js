@@ -67,7 +67,6 @@ function getMovieDetails(req,res){
 //similar movies from the chosen movie data based off of the 
 
 function getSimilarMovies(movName){
-    console.log(movName)
     let sim=[]
     let k=[]
     for(a=0;a<dataUpdate.length;a++){
@@ -76,14 +75,14 @@ function getSimilarMovies(movName){
         }
     }
     lm=0
-    console.log(k[0].Genre)
     for(a=0;a<dataUpdate.length;a++){
         if(dataUpdate[a].Title!=movName){
             for(d=0;d<dataUpdate[a].Genre.length;d++){
                 //console.log(dataUpdate[a].Title)
                 if(sim.length<5){
                     if(k[0].Genre.includes(dataUpdate[a].Genre[d])){
-                        if(sim.indexOf(dataUpdate[a])<1 && sim.length<5){
+                        //if(sim.includes(dataUpdate[a]))
+                        if(sim.includes(dataUpdate[a])<1 && sim.length<5){
                             sim.push(dataUpdate[a]);
                         }
                     }
@@ -94,6 +93,9 @@ function getSimilarMovies(movName){
     //console.log(sim)
     return sim;
 }
+
+//now for lookin up all actors in the data and looking thru their contributions and also through their ppl they
+//collabed with
 
 app.listen(3000)
 console.log("listening on port 3000")
