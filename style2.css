@@ -22,12 +22,21 @@ h1{
 .similarFilms{
     margin: 10px;
     border-radius: 10px;
-    width: 90%; 
     height:50%;
     background-color: white;
     overflow-y: auto;
 }
 .movie_img{
     float: left;
-    padding: 15px 15px 15px 15px;
+    padding: 20px 30px 40px 40px;
 }
+
+.Title{
+    font-size: xx-large;
+    text-align: center;
+}
+
+.Years, .released{
+    text-align: center;
+}
+
