@@ -10,25 +10,16 @@ h1 MOVIE LOOKUP
 // SEARCH OPTION
 // Use Forms
 .searchBox
-  input.searchMov(type='text' placeholder='Enter a movie' style='color: black;')
-  a(href='/movieInfo')
-    input.searchButton(type='button' value='Submit')
+    form(method="GET" action="/searchMov")
+        label(for='searchMovie')
+        input#searchMovie(type='text' name='searchMovie' style='color: black;')  
+        button#searchButton(type='submit') Search
 // CONTAINER FOR ALL MOVIES THAT SATISFIED THE SEARCH HISTORY
 .movie_outputs
-  .movie_img
-    img(src='https://m.media-amazon.com/images/M/MV5BZjY1NDZjYjYtZjRmMi00M2NhLTllMDktZDg2ZTRmNDA4Njc5XkEyXkFqcGdeQXVyNjQ4NTg2ODY@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
-  .movie_img
-    img(src='https://m.media-amazon.com/images/M/MV5BYzQyZGQyZDEtZjI5Zi00NmI5LWI5NTctNDA4NjI5YWNjYjdjXkEyXkFqcGdeQXVyMjAxMjEzNzU@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
-  .movie_img
-    img(src='https://m.media-amazon.com/images/M/MV5BYjgxOWYxMGQtMTc4MC00MzdmLWI0NTgtYzc1NzFiMGU4MWRjXkEyXkFqcGdeQXVyMzYxMzc3OTM@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
-  .movie_img
-    img(src='https://m.media-amazon.com/images/M/MV5BMTYyNTcwODYzMF5BMl5BanBnXkFtZTcwNjMwMzU1MQ@@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
-  .movie_img
-    img(src='https://m.media-amazon.com/images/M/MV5BZjY1NDZjYjYtZjRmMi00M2NhLTllMDktZDg2ZTRmNDA4Njc5XkEyXkFqcGdeQXVyNjQ4NTg2ODY@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
-  .movie_img
-    img(src='https://m.media-amazon.com/images/M/MV5BZjY1NDZjYjYtZjRmMi00M2NhLTllMDktZDg2ZTRmNDA4Njc5XkEyXkFqcGdeQXVyNjQ4NTg2ODY@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
-  .movie_img
-    img(src='https://m.media-amazon.com/images/M/MV5BZjY1NDZjYjYtZjRmMi00M2NhLTllMDktZDg2ZTRmNDA4Njc5XkEyXkFqcGdeQXVyNjQ4NTg2ODY@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
-  .movie_img
-    img(src='https://m.media-amazon.com/images/M/MV5BZjY1NDZjYjYtZjRmMi00M2NhLTllMDktZDg2ZTRmNDA4Njc5XkEyXkFqcGdeQXVyNjQ4NTg2ODY@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
+    for a in movies
+        .movie_img
+            //p #{a.Title}
+            a(href='/movies/'+a.Title)
+                img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
+        //img(src='https://m.media-amazon.com/images/M/MV5BZjY1NDZjYjYtZjRmMi00M2NhLTllMDktZDg2ZTRmNDA4Njc5XkEyXkFqcGdeQXVyNjQ4NTg2ODY@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
 // footer

@@ -21,7 +21,6 @@ h1{
 
 .movie_outputs{
     background-color: rgba(255,255,255,0.6);
-    height:90%;
     margin:10px;
     border-radius: 10px;
     overflow-y: auto;
@@ -37,12 +36,13 @@ h1{
 .movie_img{
     float: left;
     padding: 15px 15px 15px 15px;
+    cursor: pointer;
 }
 
 .searchBox{
     margin: 10px;
 }
-.searchBox .searchMov{
+.searchBox #searchMovie{
     border-radius: 10px;
     height: 30px;
     width: 50%;
@@ -50,7 +50,7 @@ h1{
     padding: 20px;
 }
 
-.searchBox .searchButton{
+.searchBox #searchButton{
     color: black;
     padding: 12px;
     border-radius: 10px;
