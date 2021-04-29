@@ -60,8 +60,6 @@ function getMovieDetails(req,res){
             chosenOne.push(dataUpdate[b])
         }
     }
-    console.log("Similar: ")
-    console.log(simi)
     //console.log(chosenOne)
     res.status(200).render('movie-info',{chosen:chosenOne,similar:simi})
 }
