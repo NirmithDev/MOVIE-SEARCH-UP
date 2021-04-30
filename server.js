@@ -1,4 +1,5 @@
 const express = require('express');
+const { appendFileSync } = require('fs');
 const { platform } = require('os');
 const path=require('path')
 const app = express();
@@ -8,13 +9,10 @@ app.use(express.static("public"));
 app.use('/css',express.static(__dirname+'/style'))
 
 let data=require('./movie-data.json')
-console.log(data.length)
+//console.log(data.length)
 let dataUpdate=[]
-
-
 for(a=0;a<data.length;a++){
     dataUpdate.push(data[a])
-    
 }
 
 
@@ -22,12 +20,20 @@ app.set('views', './pages');
 app.set('view engine', 'pug');
 
 app.get('/',(req,res)=>{
-    console.log(dataUpdate.length)
+    //console.log(dataUpdate.length)
     res.status(200).render('home',{movies:dataUpdate})
 })
 
 app.get('/movieInfo',(req,res)=>{
     res.status(200).render('movie-info')
+})
+
+app.get('/actorLookup',(req,res)=>{
+    res.status(200).render('actor_home')
+})
+
+app.get('/actorTest',function(req,res){
+    res.status(200).render('actor')
 })
 
 app.get('/searchMov',searchMov)
