@@ -4,6 +4,7 @@ const { platform } = require('os');
 const path=require('path')
 const app = express();
 const pug = require("pug");
+//maybe using nodemon in it is not a bad choice tbh
 app.use(express.static("public"));
 
 app.use('/css',express.static(__dirname+'/style'))
@@ -15,6 +16,45 @@ for(a=0;a<data.length;a++){
     dataUpdate.push(data[a])
 }
 
+let peopleData=[]
+console.log(dataUpdate[0].Actors)
+//iterate thru all the dataUpdate details
+//then proceed thru each Actors Directors Writers Section amd append it to the people Data and then
+//use set to segregate out the unique terms
+//Actors
+//Directors
+//Writer
+let Actors=dataUpdate[0].Writer;
+//console.log(dataUpdate[0])
+let acttes=[]
+for(let a=0;a<Actors.length;a++){
+    acttes.push(Actors[a])
+}
+//console.log(acttes)
+
+let act=[]
+for(a=0;a<dataUpdate.length;a++){
+    //Actors
+    let Actors=dataUpdate[a].Actors
+    for(let b=0;b<Actors.length;b++){
+        act.push(Actors[b]+ ' (Actor)')
+    } 
+    //Writers
+    let writer=dataUpdate[a].Writer
+    for(let b=0;b<writer.length;b++){
+        act.push(writer[b]+ ' (Writer)')
+    }
+    //act=[...new Set(act)]   
+    //Directors 
+    let director=dataUpdate[a].Director
+    for(b=0;b<director.length;b++){
+        act.push(director[b]+ ' (Director)')
+    }
+    act=[...new Set(act)]  
+}
+
+console.log(act.length)
+//using set remove all the repeated people
 
 app.set('views', './pages');
 app.set('view engine', 'pug');
@@ -29,7 +69,7 @@ app.get('/movieInfo',(req,res)=>{
 })
 
 app.get('/actorLookup',(req,res)=>{
-    res.status(200).render('actor_home')
+    res.status(200).render('actor_home',{name:act})
 })
 
 app.get('/actorTest',function(req,res){
@@ -37,6 +77,7 @@ app.get('/actorTest',function(req,res){
 })
 
 app.get('/searchMov',searchMov)
+app.get('/searchPeep',searchPeep)
 app.get('/movies/:mid',getMovieDetails)
 
 //take in the input for the movie name
@@ -102,6 +143,21 @@ function getSimilarMovies(movName){
 
 //now for lookin up all actors in the data and looking thru their contributions and also through their ppl they
 //collabed with
+function searchPeep(req,res,next){
+    //console.log("test passed")
+    let b= req.query.searchPeople;
+    console.log(b)
+    b=b.toLowerCase()
+    let c=[];
+    for(a=0;a<act.length;a++){
+        if(act[a].toLowerCase().includes(b)){
+     //       console.log(act[a]);
+            c.push(act[a])
+        }
+    }
+    res.status(200).render('actor_home',{name:c})
+}
+
 
 app.listen(3000)
 console.log("listening on port 3000")

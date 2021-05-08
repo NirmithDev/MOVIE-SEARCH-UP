@@ -6,31 +6,17 @@ head
   link(rel='preconnect' href='https://fonts.gstatic.com')
   link(href='https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap' rel='stylesheet')
 // LOGO
-h1 PEOPLE LOOKUP
+h1
+  a(href='/' style='text-decoration: none;') PEOPLE LOOKUP
 // SEARCH OPTION
 // Use Forms
 .searchBox
-  input.searchMov(type='text' placeholder='Enter a movie' style='color: black;')
-  a(href='/actorTest')
-    input.searchButton(type='button' value='Submit')
-// Container with all people name's
+    form(method="GET" action="/searchPeep")
+      input.searchMov(type='text' name="searchPeople" placeholder="Enter name of person" style='color: black;')
+      input.searchButton(type='submit' value='Submit')
+// Container with all people name's that are first defaulted into it and then we take in the input
 .allPeeps
-  .name(style='padding: 10px;') Nirmith Victor
-  .name(style='padding: 10px;') Jackie Chan
-  .name(style='padding: 10px;') Bruce Lee
-  .name(style='padding: 10px;') Nirmith Victor
-  .name(style='padding: 10px;') Jackie Chan
-  .name(style='padding: 10px;') Bruce Lee
-  .name(style='padding: 10px;') Nirmith Victor
-  .name(style='padding: 10px;') Jackie Chan
-  .name(style='padding: 10px;') Bruce Lee
-  .name(style='padding: 10px;') Nirmith Victor
-  .name(style='padding: 10px;') Jackie Chan
-  .name(style='padding: 10px;') Bruce Lee
-  .name(style='padding: 10px;') Nirmith Victor
-  .name(style='padding: 10px;') Jackie Chan
-  .name(style='padding: 10px;') Bruce Lee
-  .name(style='padding: 10px;') Nirmith Victor
-  .name(style='padding: 10px;') Jackie Chan
-  
+  for a in name
+    .name(style='padding: 22px;') #{a}
+    
 // footer
