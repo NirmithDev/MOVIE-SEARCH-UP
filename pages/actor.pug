@@ -15,18 +15,24 @@ h1
 div(style='margin: 10px;background-color: rgba(255,255,255,0.3); border-radius: 10px;')
   .Name(style='padding: 10px')
     b Name:
-    |  Adolf Hitler
+    |  #{name}
   br
   .type(style='padding: 10px')
     b Type:
-    |  Actor
+    |  #{type}
   br
   // Can Be Both For Like Acted In Or Directed Or Written
-  h2(style='padding-left: 10px;') Movie Contributed By (type)
-  .ActedIn(style='padding: 10px') Triumph of the Will
+  h2(style='padding-left: 10px;') Movie Contributed By #{type}
+  for a in cont
+    // add linking to respective movies
+    //p(style='font-size:30px; padding-left:10px') 
+      |  &#x261E 
+    .ActedIn(style='padding: 10px') &#x261E #{a}
   br
   h2(style='padding-left: 10px;') Collabed With
   .Collabed(style='padding: 10px;')
     | Leni Riefenstahl, Max Amann, Martin Bormann, Walter Buch
 a(href='/')
   input.button(type='button' value='Home')
+a(href='/actorLookup')
+  input.button(type='button' value='Lookup')

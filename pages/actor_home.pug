@@ -16,7 +16,8 @@ h1
       input.searchButton(type='submit' value='Submit')
 // Container with all people name's that are first defaulted into it and then we take in the input
 .allPeeps
-  for a in name
-    .name(style='padding: 22px;') #{a}
+  for b in name
+    a(href='/actors/'+b)
+      .name(style='padding: 22px;') #{b}
     
 // footer

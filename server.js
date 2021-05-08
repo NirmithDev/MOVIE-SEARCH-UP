@@ -17,7 +17,7 @@ for(a=0;a<data.length;a++){
 }
 
 let peopleData=[]
-console.log(dataUpdate[0].Actors)
+//console.log(dataUpdate[0].Actors)
 //iterate thru all the dataUpdate details
 //then proceed thru each Actors Directors Writers Section amd append it to the people Data and then
 //use set to segregate out the unique terms
@@ -53,7 +53,7 @@ for(a=0;a<dataUpdate.length;a++){
     act=[...new Set(act)]  
 }
 
-console.log(act.length)
+//console.log(act.length)
 //using set remove all the repeated people
 
 app.set('views', './pages');
@@ -79,6 +79,7 @@ app.get('/actorTest',function(req,res){
 app.get('/searchMov',searchMov)
 app.get('/searchPeep',searchPeep)
 app.get('/movies/:mid',getMovieDetails)
+app.get('/actors/:aid',getActorDetails)
 
 //take in the input for the movie name
 //then we search thru the data and if there are matches in data set then 
@@ -146,18 +147,75 @@ function getSimilarMovies(movName){
 function searchPeep(req,res,next){
     //console.log("test passed")
     let b= req.query.searchPeople;
-    console.log(b)
+    //console.log(b)
     b=b.toLowerCase()
     let c=[];
     for(a=0;a<act.length;a++){
         if(act[a].toLowerCase().includes(b)){
-     //       console.log(act[a]);
             c.push(act[a])
         }
     }
     res.status(200).render('actor_home',{name:c})
 }
 
+function getActorDetails(req,res,next){
+    let a=req.params.aid
+    //get the type of person they looked up
+    b=a.indexOf("(")
+    type=""
+    for(c=b+1;c<a.length-1;c++){
+        type+=a[c]
+    }
+    //now we will just have to get the name
+    nam=""
+    for(c=0;c<b;c++){
+        nam+=a[c];
+    }
+    console.log(nam+ " Type ->"+ type)
+    
+    //find all movies that they collabed in or contributed for
+    //simple for loop thru data
+    let rahhh=[]
+    nam=nam.substring(0,nam.length-1)
+    
+    console.log(nam)
+    let segregate=[]
+    //segregation boi
+    for(mo=0;mo<dataUpdate.length;mo++){
+        //if type is an actor
+        if(type=="Actor"){
+            for(a=0;a<dataUpdate[mo].Actors.length;a++){
+                if(dataUpdate[mo].Actors[a]==nam){
+                    segregate.push(dataUpdate[mo])
+                }
+            }
+        }
+        if(type=="Writer"){
+            for(a=0;a<dataUpdate[mo].Writer.length;a++){
+                if(dataUpdate[mo].Writer[a]==nam){
+                    segregate.push(dataUpdate[mo])
+                }
+            }
+        }
+        else if(type=="Director"){
+            for(a=0;a<dataUpdate[mo].Director.length;a++){
+                if(dataUpdate[mo].Director[a]==nam){
+                    segregate.push(dataUpdate[mo])
+                }
+            }
+        }
+    }
+    contri_name=[]
+    //get the titles of the movies that they contributed to
+    for(a=0;a<segregate.length;a++){
+        contri_name.push(segregate[a].Title)
+    }
+
+    //get the collaborated users for the shizzle
+
+    //render the actor page 
+    res.status(200).render('actor',{name:nam,type:type,cont:contri_name});
+}
 
 app.listen(3000)
 console.log("listening on port 3000")
