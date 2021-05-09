@@ -39,19 +39,22 @@ div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255,
     em.Nam(style='font-size:xx-large;') Director: 
     br
     for a in chosen[0].Director
-        | #{a},  
+        a(href='/actors/'+a+' (Director)' style='text-decoration:none;') #{a}
+        br  
   br
   .Actors(style='margin: 10px;')
     em.Nam(style='font-size:xx-large;') Actors: 
     br
     for a in chosen[0].Actors
-        | #{a}, 
+        a(href='/actors/'+a+' (Actor)' style='text-decoration:none;') #{a}
+        br 
   br
   .Actors(style='margin: 10px;')
     em.Nam(style='font-size:xx-large;') Writers: 
     br
     for a in chosen[0].Writer
-        | #{a}, 
+        a(href='/actors/'+a+' (Writer)' style='text-decoration:none;') #{a}
+        br
   br
   .Awards(style='margin: 10px;')
     em.Nam(style='font-size:xx-large;') Awards: 
@@ -67,5 +70,4 @@ h2(style='margin: 10px;') SIMILAR MOVIES BE LIKE
     for a in similar
         a(href='/movies/'+a.Title)
             img(src=a.Poster alt='Movie Name' width='300' height='450' style='border-radius: 10px; margin:10px;')
-
 br
