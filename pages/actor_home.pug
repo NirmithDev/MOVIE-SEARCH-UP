@@ -8,6 +8,11 @@ head
 // LOGO
 h1
   a(href='/' style='text-decoration: none;') PEOPLE LOOKUP
+
+//button to movie lookup
+a(href='/')
+  input.button(type='button' value='Home')
+
 // SEARCH OPTION
 // Use Forms
 .searchBox
@@ -17,7 +22,7 @@ h1
 // Container with all people name's that are first defaulted into it and then we take in the input
 .allPeeps
   for b in name
-    a(href='/actors/'+b)
+    a(href='/actors/'+b style="text-decoration:none;")
       .name(style='padding: 22px;') #{b}
     
 // footer

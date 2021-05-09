@@ -171,14 +171,14 @@ function getActorDetails(req,res,next){
     for(c=0;c<b;c++){
         nam+=a[c];
     }
-    console.log(nam+ " Type ->"+ type)
+    //console.log(nam+ " Type ->"+ type)
     
     //find all movies that they collabed in or contributed for
     //simple for loop thru data
     let rahhh=[]
     nam=nam.substring(0,nam.length-1)
     
-    console.log(nam)
+    //console.log(nam)
     let segregate=[]
     //segregation boi
     for(mo=0;mo<dataUpdate.length;mo++){
@@ -212,9 +212,46 @@ function getActorDetails(req,res,next){
     }
 
     //get the collaborated users for the shizzle
-
+    collabed=getCollabed(nam,type,segregate);
+    console.log(collabed)
     //render the actor page 
-    res.status(200).render('actor',{name:nam,type:type,cont:contri_name});
+    res.status(200).render('actor',{name:nam,type:type,cont:contri_name,collab:collabed});
+}
+
+function getCollabed(name_person,type,segregate){
+
+    let collabArr=[]
+    //iterate thru segregate data
+    for(a=0;a<segregate.length;a++){
+        //console.log(segregate[a].Title)    
+        //check type of user and if actor iterate thru director and writer and then actor
+        
+            for(b=0;b<segregate[a].Writer.length;b++){
+                if(collabArr.length<5 && segregate[a].Writer[b]!=name_person){
+                    if(collabArr.indexOf(segregate[a].Writer[b])<0){
+                        collabArr.push(segregate[a].Writer[b] + " (Writer)")
+                    }
+                }
+            }
+            for(b=0;b<segregate[a].Director.length;b++){
+                if(collabArr.length<5 && segregate[a].Director[b]!=name_person){
+                    if(collabArr.indexOf(segregate[a].Director[b])<0){
+                        collabArr.push(segregate[a].Director[b] + " (Director)")
+                    }
+                }
+            }
+            for(b=0;b<segregate[a].Actors.length;b++){
+                if(collabArr.length<5 && segregate[a].Actors[b]!=name_person){
+                    if(collabArr.indexOf(segregate[a].Actors[b])<0){
+                        collabArr.push(segregate[a].Actors[b] + " (Actor)")
+                    }
+                }
+            }
+    }    
+    //console.log(collabArr)
+    //set only 3-4 people that they collaborated with
+    
+    return collabArr
 }
 
 app.listen(3000)
