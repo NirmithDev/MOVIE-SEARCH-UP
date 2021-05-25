@@ -17,3 +17,9 @@
 - DO NOT COPY THE ALGO INSTEAD USE IT FOR REFERENCE IF YOU DID THEN UHHHH THE CAT 🐈 GET'S IT 🥫 NO PETS 
 
 I am just messing with ya the cat won't let me live if I said no to it but anyway give credit and stay groovy!!!!
+
+
+# Update functionality
+
+- added a profile page will add login and registration capability soon
+- what it can do is store users input history and also store viewer's history you can add the follow button and subscribe or add movie to watchlist button but I will not be doing that here
