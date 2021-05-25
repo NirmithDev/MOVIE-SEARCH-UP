@@ -11,6 +11,8 @@ h1 MOVIE LOOKUP
 // ACTOR LOOKUP
 a(href='/actorLookup')
   input.button(type='button' value='LOOKUP CREATOR/ ACTOR/ WRITER/ DIRECTORS')
+a(href='/profile')
+  input.button(type='button' value='PROFILE')
 // Use Forms
 
 .searchBox
@@ -24,6 +26,6 @@ a(href='/actorLookup')
         .movie_img
             //p #{a.Title}
             a(href='/movies/'+a.Title)
-                img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
+              img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
         //img(src='https://m.media-amazon.com/images/M/MV5BZjY1NDZjYjYtZjRmMi00M2NhLTllMDktZDg2ZTRmNDA4Njc5XkEyXkFqcGdeQXVyNjQ4NTg2ODY@._V1_SX300.jpg' alt='img' width='400' height='450' style='border-radius: 10px;')
 // footer

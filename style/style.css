@@ -26,6 +26,7 @@ h1{
     font-family: 'Roboto', sans-serif;
     float: left;
     padding: 22px 22px 22px 22px;
+    /*width: 100vh;*/
 }
 .movie_outputs::after{
     content: "";

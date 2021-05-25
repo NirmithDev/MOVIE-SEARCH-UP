@@ -4,20 +4,23 @@ const { platform } = require('os');
 const path=require('path')
 const app = express();
 const pug = require("pug");
+//const requestIp= require('request-ip');
+const ip=require("ip");
+
 //maybe using nodemon in it is not a bad choice tbh
 app.use(express.static("public"));
 
 app.use('/css',express.static(__dirname+'/style'))
-
+//you can add a much more bigger data file or append this and remove all duplicates
 let data=require('./movie-data.json')
 //console.log(data.length)
 let dataUpdate=[]
 for(a=0;a<data.length;a++){
     dataUpdate.push(data[a])
 }
-
+let userInput=[]
+let movieHist=[]
 let peopleData=[]
-//console.log(dataUpdate[0].Actors)
 //iterate thru all the dataUpdate details
 //then proceed thru each Actors Directors Writers Section amd append it to the people Data and then
 //use set to segregate out the unique terms
@@ -76,6 +79,16 @@ app.get('/actorTest',function(req,res){
     res.status(200).render('actor')
 })
 
+//login, registrs=ation
+app.get('/profile',function(req,res){
+    const ip2 = ip.address();
+    //console.log(ip)
+    console.log(ip2)
+    console.log(userInput)
+    console.log(movieHist)
+    res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist});
+})
+
 app.get('/searchMov',searchMov)
 app.get('/searchPeep',searchPeep)
 app.get('/movies/:mid',getMovieDetails)
@@ -87,6 +100,7 @@ app.get('/actors/:aid',getActorDetails)
 function searchMov(req,res,next){
     let b= req.query.searchMovie
     let movPs=[]
+    userInput.push(b)
     for(c=0;c<dataUpdate.length;c++){
         let d=dataUpdate[c].Title.toLowerCase()
         if(d.includes(b.toLowerCase())){
@@ -106,8 +120,10 @@ function getMovieDetails(req,res){
     for(b=0;b<dataUpdate.length;b++){
         if(dataUpdate[b].Title==a){
             chosenOne.push(dataUpdate[b])
+            movieHist.push(dataUpdate[b])
         }
     }
+    //movieHist=chosenOne;
     //console.log(chosenOne)
     res.status(200).render('movie-info',{chosen:chosenOne,similar:simi})
 }
@@ -127,7 +143,7 @@ function getSimilarMovies(movName){
         if(dataUpdate[a].Title!=movName){
             for(d=0;d<dataUpdate[a].Genre.length;d++){
                 //console.log(dataUpdate[a].Title)
-                if(sim.length<5){
+                if(sim.length<4){
                     if(k[0].Genre.includes(dataUpdate[a].Genre[d])){
                         //if(sim.includes(dataUpdate[a]))
                         if(sim.includes(dataUpdate[a])<1 && sim.length<5){
@@ -149,6 +165,7 @@ function searchPeep(req,res,next){
     let b= req.query.searchPeople;
     //console.log(b)
     b=b.toLowerCase()
+    userInput.push(b)
     let c=[];
     for(a=0;a<act.length;a++){
         if(act[a].toLowerCase().includes(b)){

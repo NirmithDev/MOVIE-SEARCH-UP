@@ -1,0 +1,37 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  title SEARCH MOVIE
+  link(rel='stylesheet' href='/css/style.css')
+  link(rel='preconnect' href='https://fonts.gstatic.com')
+  link(href='https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap' rel='stylesheet')
+  link(rel='stylesheet' href='/css/style_profile.css')
+// LOGO
+h1 PROFILE
+// ACTOR LOOKUP
+a(href='/actorLookup')
+  input.button(type='button' value='LOOKUP CREATOR/ ACTOR/ WRITER/ DIRECTORS')
+a(href='/')
+  input.button(type='button' value='SEARCH MOVIE')
+.name
+  p(style='padding-bottom: 10px;') Username: Nirmith Victor D&apos;Almeida
+  p Password : 12345
+// Viewing History
+.history
+  .his
+    div(style='text-align: center;align-items: center;display: flex;flex-direction: column;')
+      p(style='font-size: 40px;padding-top: 23px;') VIEWER HISTORY
+      .mov_hist
+        for a in movieHist
+          .movie_img1
+            img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
+  div(style='margin: 10px;')
+    p USERS INPUT HISTORY
+    .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
+      for a in userinp 
+        div 
+        | #{a}
+      
+div
+  .location
+    p#ip IP ADDRESS: #{ip}
