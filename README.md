@@ -23,3 +23,4 @@ I am just messing with ya the cat won't let me live if I said no to it but anywa
 
 - added a profile page will add login and registration capability soon
 - what it can do is store users input history and also store viewer's history you can add the follow button and subscribe or add movie to watchlist button but I will not be doing that here
+- Login and register pages are there
