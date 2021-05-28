@@ -84,9 +84,17 @@ app.get('/profile',function(req,res){
     const ip2 = ip.address();
     //console.log(ip)
     console.log(ip2)
-    console.log(userInput)
-    console.log(movieHist)
+    //console.log(userInput)
+    //console.log(movieHist)
     res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist});
+})
+
+app.get('/login',function(req,res){
+    res.status(200).render('login')
+})
+
+app.get('/register',function(req,res){
+    res.status(200).render('register')
 })
 
 app.get('/searchMov',searchMov)

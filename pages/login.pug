@@ -1,0 +1,25 @@
+
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Login Page
+  link(rel='stylesheet' href='/css/style_login.css')
+  link(rel='preconnect' href='https://fonts.gstatic.com')
+  link(href='https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap' rel='stylesheet')
+.container2
+  a(href='/actorLookup')
+    input.btn(type='button' value='ACTOR HOME')
+  a(href='/')
+    input.btn(type='button' value='HOME')
+.container
+  .login
+    .login2
+      p(style='font-size: 50px;margin: 20px;') Login
+      div(style='display: flex; flex-direction: column; height: 100%;')
+        form(action='' method='GET' style='display: contents;')
+          input.name(type='text' placeholder='Username')
+          input.name(type='text' placeholder='password')
+          input.btn(type='button' value='Submit')
+          a(href='/register' style='text-decoration: none; cursor: pointer;')
+            p(style='color: white; font-size: 25px;margin-top: 20px;') New?? Register
