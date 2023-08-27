@@ -21,7 +21,7 @@ body{
     border-radius: 20px 0 10px 0;
 }
 
-.name{
+.name,.password{
     color: black;
     padding: 20px;
     margin: 10px;

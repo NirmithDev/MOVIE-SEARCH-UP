@@ -17,9 +17,9 @@ head
     .login2
       p(style='font-size: 50px;margin: 20px;') Login
       div(style='display: flex; flex-direction: column; height: 100%;')
-        form(action='' method='GET' style='display: contents;')
+        form(action='/login' method='POST' style='display: contents;')
           input.name(type='text' placeholder='Username')
           input.name(type='text' placeholder='password')
-          input.btn(type='button' value='Submit')
+          input.btn(type='submit' value='Submit')
           a(href='/register' style='text-decoration: none; cursor: pointer;')
             p(style='color: white; font-size: 25px;margin-top: 20px;') New?? Register

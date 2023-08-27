@@ -1,11 +1,14 @@
 const express = require('express');
 const { appendFileSync } = require('fs');
 const { platform } = require('os');
+const bodyParser = require('body-parser');
 const path=require('path')
 const app = express();
 const pug = require("pug");
 //const requestIp= require('request-ip');
 const ip=require("ip");
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //maybe using nodemon in it is not a bad choice tbh
 app.use(express.static("public"));
@@ -90,6 +93,7 @@ app.get('/profile',function(req,res){
 })
 
 app.get('/login',function(req,res){
+    console.log(registeredUsers)
     res.status(200).render('login')
 })
 
@@ -101,6 +105,27 @@ app.get('/searchMov',searchMov)
 app.get('/searchPeep',searchPeep)
 app.get('/movies/:mid',getMovieDetails)
 app.get('/actors/:aid',getActorDetails)
+
+//store registered users
+const registeredUsers ={};
+
+//adding post requests to handle user inputs
+app.post('/register',(req,res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    console.log(username)
+    console.log(password)
+    //console.log(req)
+    if (res.statusCode === 200) {
+        registeredUsers[username] = {
+            username,
+            password
+          };
+        res.redirect('/login');
+    } else {
+        res.send('Registration failed');
+    }
+})
 
 //take in the input for the movie name
 //then we search thru the data and if there are matches in data set then 
