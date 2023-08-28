@@ -1,4 +1,6 @@
 const express = require('express');
+const session = require('express-session');
+const flash = require('express-flash');
 const { appendFileSync } = require('fs');
 const { platform } = require('os');
 const bodyParser = require('body-parser');
@@ -12,6 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //maybe using nodemon in it is not a bad choice tbh
 app.use(express.static("public"));
+app.use(flash());
+
 
 app.use('/css',express.static(__dirname+'/style'))
 //you can add a much more bigger data file or append this and remove all duplicates
@@ -24,6 +28,13 @@ for(a=0;a<data.length;a++){
 let userInput=[]
 let movieHist=[]
 let peopleData=[]
+
+app.use(session({
+    secret: 'ULTRABIGSECRETKEY',
+    resave: false,
+    saveUninitialized: true
+}));
+
 //iterate thru all the dataUpdate details
 //then proceed thru each Actors Directors Writers Section amd append it to the people Data and then
 //use set to segregate out the unique terms
@@ -87,9 +98,19 @@ app.get('/profile',function(req,res){
     const ip2 = ip.address();
     //console.log(ip)
     console.log(ip2)
+    const username = req.session.user.username;
+    const password = req.session.user.password;
+    res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist,username:username,password:password});
+    /*if (req.session.username) {
+        // Session exists: user is logged in
+        const username = req.session.username;
+        res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist,username:username});
+      } else {
+        // No session: user is not logged in
+        res.redirect('/login');
+      }*/
     //console.log(userInput)
     //console.log(movieHist)
-    res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist});
 })
 
 app.get('/login',function(req,res){
@@ -110,19 +131,42 @@ app.get('/actors/:aid',getActorDetails)
 const registeredUsers ={};
 
 //adding post requests to handle user inputs
+app.post('/login',(req,res)=>{
+    const username = req.body.username;
+    const password = req.body.password;
+    //console.log(username)
+    //console.log(password)
+    console.log(registeredUsers)
+    const user = registeredUsers[username];
+    //console.log(user)
+    //add authentication and session cookies
+    //if (res.statusCode === 200) {
+    if (user.password === password) {
+        //res.send('User present');
+        req.session.user = {
+            username,
+            password
+        };
+        console.log(req.session)
+        res.redirect('/profile');
+    } else {
+        res.send('Login failed');
+    }
+})
+
 app.post('/register',(req,res) => {
     const username = req.body.username;
     const password = req.body.password;
-    console.log(username)
-    console.log(password)
     //console.log(req)
     if (res.statusCode === 200) {
         registeredUsers[username] = {
             username,
             password
-          };
+        };
+        req.flash('success', 'Registration successful. You can now log in.');
         res.redirect('/login');
     } else {
+        req.flash('error', 'Registration failed. Please try again.');
         res.send('Registration failed');
     }
 })

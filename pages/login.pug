@@ -18,8 +18,8 @@ head
       p(style='font-size: 50px;margin: 20px;') Login
       div(style='display: flex; flex-direction: column; height: 100%;')
         form(action='/login' method='POST' style='display: contents;')
-          input.name(type='text' placeholder='Username')
-          input.name(type='text' placeholder='password')
+          input.name(type='text' name='username' placeholder='Username')
+          input.name(type='password' name='password' placeholder='password')
           input.btn(type='submit' value='Submit')
           a(href='/register' style='text-decoration: none; cursor: pointer;')
             p(style='color: white; font-size: 25px;margin-top: 20px;') New?? Register
