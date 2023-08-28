@@ -23,3 +23,5 @@ head
           input.btn(type='submit' value='Submit')
           a(href='/register' style='text-decoration: none; cursor: pointer;')
             p(style='color: white; font-size: 25px;margin-top: 20px;') New?? Register
+        if error
+          p.error= error

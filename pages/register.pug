@@ -20,11 +20,6 @@ head
           p#password-hint(style='color: gray; margin: 0.5rem 0;')
           input.btn(type='submit' value='Submit')
 
-if messages.error
-  p.error= messages.error
-if messages.success
-  p.success= messages.success
-
 script.
   const passwordInput = document.getElementById('password');
   const passwordHint = document.getElementById('password-hint');

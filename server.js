@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //maybe using nodemon in it is not a bad choice tbh
 app.use(express.static("public"));
-app.use(flash());
+//app.use(flash());
 
 
 app.use('/css',express.static(__dirname+'/style'))
@@ -81,6 +81,17 @@ app.get('/',(req,res)=>{
     res.status(200).render('home',{movies:dataUpdate})
 })
 
+app.get('/logout',(req,res)=>{
+    //console.log(dataUpdate.length)
+    req.session.destroy((err) => {
+        if (err) {
+          console.error('Error destroying session:', err);
+        } else {
+          res.status(200).render('home',{movies:dataUpdate})
+        }
+    });
+})
+
 app.get('/movieInfo',(req,res)=>{
     res.status(200).render('movie-info')
 })
@@ -141,7 +152,10 @@ app.post('/login',(req,res)=>{
     //console.log(user)
     //add authentication and session cookies
     //if (res.statusCode === 200) {
-    if (user.password === password) {
+    if (!user) {
+            // User does not exist
+        res.render('login', { error: 'User does not exist' });
+    } else if (user.password === password) {
         //res.send('User present');
         req.session.user = {
             username,
@@ -150,7 +164,7 @@ app.post('/login',(req,res)=>{
         console.log(req.session)
         res.redirect('/profile');
     } else {
-        res.send('Login failed');
+        res.render('login', { error: 'Incorrect username or password' });
     }
 })
 
@@ -163,10 +177,8 @@ app.post('/register',(req,res) => {
             username,
             password
         };
-        req.flash('success', 'Registration successful. You can now log in.');
         res.redirect('/login');
     } else {
-        req.flash('error', 'Registration failed. Please try again.');
         res.send('Registration failed');
     }
 })
