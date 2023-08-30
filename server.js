@@ -145,6 +145,7 @@ const registeredUsers ={};
 app.post('/login',(req,res)=>{
     const username = req.body.username;
     const password = req.body.password;
+    const userSessionSearchHist = [];
     //console.log(username)
     //console.log(password)
     console.log(registeredUsers)
@@ -159,7 +160,8 @@ app.post('/login',(req,res)=>{
         //res.send('User present');
         req.session.user = {
             username,
-            password
+            password,
+            userSessionSearchHist
         };
         console.log(req.session)
         res.redirect('/profile');
@@ -171,11 +173,13 @@ app.post('/login',(req,res)=>{
 app.post('/register',(req,res) => {
     const username = req.body.username;
     const password = req.body.password;
+    const searchHist =[]
     //console.log(req)
     if (res.statusCode === 200) {
         registeredUsers[username] = {
             username,
-            password
+            password,
+            searchHist
         };
         res.redirect('/login');
     } else {
