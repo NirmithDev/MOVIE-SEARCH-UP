@@ -115,9 +115,11 @@ app.get('/profile',function(req,res){
         const username = req.session.user.username;
         const password = req.session.user.password;
         const userLoggedIn = true;
+        const userSearchData = req.session.user.userSessionSearchHist;
+        console.log(userSearchData)
         console.log(username)
         console.log(password)
-        res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn});
+        res.status(200).render('profile',{ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn});
       } else {
         // No session: user is not logged in
         res.redirect('/login');
@@ -196,14 +198,17 @@ app.post('/register',(req,res) => {
 function searchMov(req,res,next){
     let b= req.query.searchMovie
     let movPs=[]
-    userInput.push(b)
+    //userInput.push(b)
     for(c=0;c<dataUpdate.length;c++){
         let d=dataUpdate[c].Title.toLowerCase()
         if(d.includes(b.toLowerCase())){
             movPs.push(dataUpdate[c])
         }
     }
-    res.status(200).render('home',{movies:movPs})
+    req.session.user.userSessionSearchHist.push(b);
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    console.log(loggedIn)
+    res.status(200).render('home',{movies:movPs, isLoggedIn: loggedIn})
 }
 
 function getMovieDetails(req,res){
@@ -261,7 +266,8 @@ function searchPeep(req,res,next){
     let b= req.query.searchPeople;
     //console.log(b)
     b=b.toLowerCase()
-    userInput.push(b)
+    //userInput.push(b)
+    req.session.user.userSessionSearchHist.push(b);
     let c=[];
     for(a=0;a<act.length;a++){
         if(act[a].toLowerCase().includes(b)){
