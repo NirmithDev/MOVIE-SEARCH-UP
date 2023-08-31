@@ -27,6 +27,7 @@ for(a=0;a<data.length;a++){
 }
 let userInput=[]
 let movieHist=[]
+//use to monitor people input in search bars
 let peopleData=[]
 
 app.use(session({
@@ -78,7 +79,9 @@ app.set('view engine', 'pug');
 
 app.get('/',(req,res)=>{
     //console.log(dataUpdate.length)
-    res.status(200).render('home',{movies:dataUpdate})
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    console.log(loggedIn)
+    res.status(200).render('home', { movies: dataUpdate, isLoggedIn: loggedIn });
 })
 
 app.get('/logout',(req,res)=>{
@@ -107,19 +110,18 @@ app.get('/actorTest',function(req,res){
 //login, registrs=ation
 app.get('/profile',function(req,res){
     const ip2 = ip.address();
-    //console.log(ip)
-    console.log(ip2)
-    const username = req.session.user.username;
-    const password = req.session.user.password;
-    res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist,username:username,password:password});
-    /*if (req.session.username) {
+    if (req.session.user && req.session.user.username) {
         // Session exists: user is logged in
-        const username = req.session.username;
-        res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist,username:username});
+        const username = req.session.user.username;
+        const password = req.session.user.password;
+        const userLoggedIn = true;
+        console.log(username)
+        console.log(password)
+        res.status(200).render('profile',{ip:ip2, userinp:userInput, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn});
       } else {
         // No session: user is not logged in
         res.redirect('/login');
-      }*/
+    }
     //console.log(userInput)
     //console.log(movieHist)
 })
@@ -161,7 +163,8 @@ app.post('/login',(req,res)=>{
         req.session.user = {
             username,
             password,
-            userSessionSearchHist
+            userSessionSearchHist,
+            loggedIn: true
         };
         console.log(req.session)
         res.redirect('/profile');

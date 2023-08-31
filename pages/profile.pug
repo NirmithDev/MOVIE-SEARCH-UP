@@ -13,8 +13,9 @@ a(href='/actorLookup')
   input.button(type='button' value='LOOKUP CREATOR/ ACTOR/ WRITER/ DIRECTORS')
 a(href='/')
   input.button(type='button' value='SEARCH MOVIE')
-a(href='/logout')
-  input.button(type='button' value='LOGOUT')
+if loggedIn
+  a(href='/logout')
+    input.button(type='button' value='LOGOUT')
 .name
   p(style='padding-bottom: 10px;') Username: #{username} 
   p Password : #{password} 
