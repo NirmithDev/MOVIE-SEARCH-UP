@@ -17,17 +17,19 @@ if loggedIn
   a(href='/logout')
     input.button(type='button' value='LOGOUT')
 .name
-  p(style='padding-bottom: 10px;') Username: #{username} 
-  p Password : #{password} 
+  p(style='padding-bottom: 10px;') Username: #{username}
+  p Password: #{password}
 // Viewing History
 .history
   .his
     div(style='text-align: center;align-items: center;display: flex;flex-direction: column;')
       p(style='font-size: 40px;padding-top: 23px;') VIEWER HISTORY
       .mov_hist
-        for a in movieHist
+        - const movieHistArray = Array.from(movieHist)
+        for a in movieHistArray
           .movie_img1
-            img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
+            a(href=`/movies/${a.Title}`)
+              img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
   div(style='margin: 10px;')
     p USERS INPUT HISTORY
     .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')

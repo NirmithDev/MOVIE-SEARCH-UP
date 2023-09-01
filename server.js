@@ -26,7 +26,7 @@ for(a=0;a<data.length;a++){
     dataUpdate.push(data[a])
 }
 let userInput=[]
-let movieHist=[]
+let movieHist=new Set();
 //use to monitor people input in search bars
 let peopleData=[]
 
@@ -125,7 +125,6 @@ app.get('/profile',function(req,res){
         res.redirect('/login');
     }
     //console.log(userInput)
-    //console.log(movieHist)
 })
 
 app.get('/login',function(req,res){
@@ -221,12 +220,13 @@ function getMovieDetails(req,res){
     for(b=0;b<dataUpdate.length;b++){
         if(dataUpdate[b].Title==a){
             chosenOne.push(dataUpdate[b])
-            movieHist.push(dataUpdate[b])
+            movieHist.add(dataUpdate[b])
         }
     }
-    //movieHist=chosenOne;
     //console.log(chosenOne)
-    res.status(200).render('movie-info',{chosen:chosenOne,similar:simi})
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    console.log(loggedIn)
+    res.status(200).render('movie-info',{chosen:chosenOne,similar:simi,userIsLoggedIn:loggedIn})
 }
 
 //similar movies from the chosen movie data based off of the 

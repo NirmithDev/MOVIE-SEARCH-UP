@@ -12,9 +12,16 @@
     padding: 10px;
 }
 
+.his{
+    margin: 10px;
+}
 
 .mov_hist{
-    width: 500px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    overflow-x: auto;
+    flex-wrap: wrap;
     overflow: auto;
     height: 400px;
     margin: 32px;

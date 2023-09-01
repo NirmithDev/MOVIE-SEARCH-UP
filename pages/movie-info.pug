@@ -63,6 +63,27 @@ div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255,
         | #{a}
   br
 // let users critique this movie
+div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255, 255, 0.31); border-radius: 10px;')
+  br
+  .Title Movie Reviews!
+  br
+  // Display section for movie reviews
+div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255, 255, 0.31); border-radius: 10px;')
+  br
+  .Title Write a Review?
+  br
+
+  // Check if the user is logged in
+  if userIsLoggedIn
+    // Form for submitting a movie review
+    form(id='reviewForm')
+      label(for='reviewInput') Your Review:
+      textarea(id='reviewInput' name='reviewText' rows='4' cols='50')
+      br
+      button(type='submit') Submit Review
+  else
+    p(style='color: red;') Please log in to submit a review.
+
 // Display movies that have similar attachements to it
 h2(style='margin: 10px;') SIMILAR MOVIES BE LIKE  
 .similarFilms
@@ -71,3 +92,4 @@ h2(style='margin: 10px;') SIMILAR MOVIES BE LIKE
         a(href='/movies/'+a.Title)
             img(src=a.Poster alt='Movie Name' width='300' height='450' style='border-radius: 10px; margin:10px;')
 br
+
