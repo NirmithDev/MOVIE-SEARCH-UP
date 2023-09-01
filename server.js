@@ -23,7 +23,24 @@ let data=require('./movie-data.json')
 //console.log(data.length)
 let dataUpdate=[]
 for(a=0;a<data.length;a++){
-    dataUpdate.push(data[a])
+    let movie = { ...data[a] };
+    
+    // Add the "reviews" property to the movie object
+    movie.reviews = [
+        {
+            Author: 'John Doe',
+            Rating: 4,
+            Comment: 'Great movie!'
+        },
+        {
+            Author: 'Jane Smith',
+            Rating: 5,
+            Comment: 'One of my favorites!'
+        }
+        // Add more review objects as needed
+    ];
+    
+    dataUpdate.push(movie)
 }
 let userInput=[]
 let movieHist=new Set();
@@ -191,6 +208,11 @@ app.post('/register',(req,res) => {
     }
 })
 
+//movieReviews
+app.post('/submitReview',(req,res)=>{
+    
+})
+
 //take in the input for the movie name
 //then we search thru the data and if there are matches in data set then 
 //pass them onto the pug file and render the home page in a suitable fashion
@@ -226,7 +248,22 @@ function getMovieDetails(req,res){
     //console.log(chosenOne)
     const loggedIn = req.session.user && req.session.user.loggedIn;
     console.log(loggedIn)
-    res.status(200).render('movie-info',{chosen:chosenOne,similar:simi,userIsLoggedIn:loggedIn})
+    console.log(chosenOne)
+    console.log(chosenOne[0].reviews)
+    //calculate average rating if there is else set the rating to N/A
+    if(chosenOne[0].reviews.length>0){
+        sum=0;
+        for(i=0;i<chosenOne[0].reviews.length;i++){
+            sum+=chosenOne[0].reviews[i].Rating;
+        }
+        averageRating = (sum / chosenOne[0].reviews.length).toFixed(1).toString();
+    }
+    else{
+        averageRating = "N/A"
+    }
+    console.log(averageRating)
+
+    res.status(200).render('movie-info',{chosen:chosenOne,similar:simi,userIsLoggedIn:loggedIn,averageRating:averageRating})
 }
 
 //similar movies from the chosen movie data based off of the 

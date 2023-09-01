@@ -62,27 +62,38 @@ div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255,
     for a in chosen[0].Awards
         | #{a}
   br
-// let users critique this movie
-div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255, 255, 0.31); border-radius: 10px;')
+// Let users critique this movie
+div(style='margin: 10px; border: 3px solid white; background-color: rgba(255, 255, 255, 0.31); border-radius: 10px;')
   br
-  .Title Movie Reviews!
-  br
-  // Display section for movie reviews
-div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255, 255, 0.31); border-radius: 10px;')
-  br
-  .Title Write a Review?
+  h2.Title Movie Reviews!
+  p(style='margin-left:20px') Average review rating for the movie is #{averageRating}
   br
 
-  // Check if the user is logged in
-  if userIsLoggedIn
-    // Form for submitting a movie review
-    form(id='reviewForm')
-      label(for='reviewInput') Your Review:
-      textarea(id='reviewInput' name='reviewText' rows='4' cols='50')
-      br
-      button(type='submit') Submit Review
-  else
-    p(style='color: red;') Please log in to submit a review.
+  // Display section for movie reviews
+  each review in chosen[0].reviews
+    div(style='margin: 10px; border: 1px solid gray; padding: 10px;')
+      p Author: #{review.Author}
+      p Rating: #{review.Rating}
+      p Comment: #{review.Comment}
+  br
+
+  // Display section for movie reviews
+div(style='margin: 10px; border: 3px solid white; background-color: rgba(255, 255, 255, 0.31); border-radius: 10px;')
+    br
+    .Title Write a Review?
+    br
+
+    // Check if the user is logged in
+    if userIsLoggedIn
+      // Form for submitting a movie review
+      form(id='reviewForm', method='POST', action='/submitReview')
+        label(for='reviewInput') Your Review:
+        textarea(id='reviewInput' name='reviewText' rows='4' cols='50')
+        br
+        button(type='submit') Submit Review
+    else
+      p(style='color: red;margin:20px;') Please log in to submit a review.
+
 
 // Display movies that have similar attachements to it
 h2(style='margin: 10px;') SIMILAR MOVIES BE LIKE  
