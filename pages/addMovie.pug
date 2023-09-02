@@ -1,0 +1,39 @@
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  link(rel='stylesheet' href='/css/style2.css')
+  link(href='https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap' rel='stylesheet')
+  title The Movie Page
+// NavBar
+h1
+  a(href='/' style='text-decoration: none;')  MOVIE LOOKUP
+// The add movie stuff which allows the user to throw in his opinions
+div
+  // Movie info
+  #movie_Container
+    // Maybe create a form
+    #reviews(style='height: 40%; padding-top: 5px;margin-left: 10px;')
+      form(id='reviewForm', method='POST', action='/addNewMovie')
+        input#name(type='text', name='movieName', placeholder='Enter name of the movie' style=' height: 10%; width: 30%; margin-top: 5px;' required)
+        input#plot(type='text', name='plot', placeholder='Enter plot of the movie' style=' height: 20%; width: 99%; margin-top: 5px;' required)
+        input#actor(type='text', name='actors', placeholder='Enter actors' style=' height: 20%; width: 99%; margin-top: 5px;' required)
+        select#genre(name='genre', style='height: 20%; width: 99%; margin-top: 5px;', required)
+            option(value='Action Films') Action Films
+            option(value='Horror Films') Horror Films
+            option(value='Adventure Films') Adventure Films
+            option(value='Musicals (Dance) Films') Musicals (Dance) Films
+            option(value='Comedy (& Black Comedy) Films') Comedy (& Black Comedy) Films
+            option(value='Science Fiction Films') Science Fiction Films
+            option(value='Crime & Gangster Films') Crime & Gangster Films
+            option(value='War (Anti-War) Films') War (Anti-War) Films
+            option(value='Drama Films') Drama Films
+            option(value='Westerns') Westerns
+            option(value='Epics/Historical/Period Films') Epics/Historical/Period Films
+
+        input#duration(type='text', name='duration', placeholder='Enter duration' style=' height: 20%; width: 99%; margin-top: 5px;' required)
+        //change to year dropdown
+        input#year_release(type='text', name='releaseYear', placeholder='Enter year of release' style=' height: 20%; width: 99%; margin-top: 5px;' required)
+        //accept only links
+        input#poster(type='text', name='posterLink', placeholder='Enter poster link' style=' height: 20%; width: 99%; margin-top: 5px;' required)
+        button#submit_rev(type='submit' style='float: right; border-radius: 10px; height: 40px; width: 100px; outline: none; margin: 20px;') Add Movie
+

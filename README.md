@@ -23,9 +23,11 @@ I am just messing with ya the cat won't let me live if I said no to it but anywa
 - search and store in viewer's history (will work on making it based on sessions so that not all user's will get based on it)
 - authentication and sessions added along with profile and home page authentication check functionality
 - some logic errors are there will focus on it
+- next to do is add reviews for movies and stuff
 
 # next steps
 
-- next to do is add reviews for movies and stuff
+- set add movies to admin only
+- add an extra step in registration to set user to admin or a normal user
 - final step is to add a add to watch later button that will be stored in user's profile
 - if time available incorporate databases

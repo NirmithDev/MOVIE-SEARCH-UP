@@ -158,6 +158,12 @@ app.get('/searchPeep',searchPeep)
 app.get('/movies/:mid',getMovieDetails)
 app.get('/actors/:aid',getActorDetails)
 
+//get page to load the add page
+//needs authentication verification and only admin people should have access to it
+app.get('/addMovie',(req,res)=>{
+    res.status(200).render('addMovie');
+})
+
 //store registered users
 const registeredUsers ={};
 
@@ -231,6 +237,23 @@ app.post('/submitReview', (req, res) => {
     res.redirect(`/movies/${movieName}`);
 });
 
+//adding post request to append and add a new movie to the original list
+app.post('/addNewMovie',(req,res)=>{
+    console.log(req.body)
+    const name      = req.body.movieName;
+    const plot      = req.body.plot;
+    const actor     = req.body.actors;
+    const genre     = req.body.genre;
+    const duration  = req.body.duration;
+    const year      = req.body.releaseYear;
+    const image     = req.body.posterLink;
+    //create an object to represent movie data
+    //push to original collection
+    
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    console.log(loggedIn)
+    res.status(200).render('home', { movies: dataUpdate, isLoggedIn: loggedIn });
+})
 
 //take in the input for the movie name
 //then we search thru the data and if there are matches in data set then 
