@@ -209,9 +209,28 @@ app.post('/register',(req,res) => {
 })
 
 //movieReviews
-app.post('/submitReview',(req,res)=>{
-    
-})
+app.post('/submitReview', (req, res) => {
+    const author = req.session.user.username;
+    const rating = parseInt(req.body.rating, 10);
+    const reviewText = req.body.reviewText;
+    const movieName = req.body.movieName;
+    // Update the movie's reviews here, assuming you have the movie object
+    // You need to locate the movie object by its name or ID in your data structure
+    // After updating the reviews, redirect to the movie-info page
+    // You may need to update the chosenOne[0] or movie object with the new review
+    let chosenOne=[]
+    //now we are going to search for that movie
+    //iterate thru the collection
+    for(b=0;b<dataUpdate.length;b++){
+        if(dataUpdate[b].Title==movieName){
+            chosenOne.push(dataUpdate[b])
+        }
+    }
+    chosenOne[0].reviews.push({ Author: author, Rating: rating, Comment: reviewText });
+    // Redirect to the movie details page
+    res.redirect(`/movies/${movieName}`);
+});
+
 
 //take in the input for the movie name
 //then we search thru the data and if there are matches in data set then 
@@ -226,9 +245,13 @@ function searchMov(req,res,next){
             movPs.push(dataUpdate[c])
         }
     }
-    req.session.user.userSessionSearchHist.push(b);
+    //req.session.user.userSessionSearchHist.push(b);
     const loggedIn = req.session.user && req.session.user.loggedIn;
     console.log(loggedIn)
+    if(loggedIn){
+        req.session.user.userSessionSearchHist.push(b);
+    }
+    
     res.status(200).render('home',{movies:movPs, isLoggedIn: loggedIn})
 }
 
@@ -256,6 +279,7 @@ function getMovieDetails(req,res){
         for(i=0;i<chosenOne[0].reviews.length;i++){
             sum+=chosenOne[0].reviews[i].Rating;
         }
+        console.log(sum)
         averageRating = (sum / chosenOne[0].reviews.length).toFixed(1).toString();
     }
     else{

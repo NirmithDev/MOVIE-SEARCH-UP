@@ -87,10 +87,17 @@ div(style='margin: 10px; border: 3px solid white; background-color: rgba(255, 25
     if userIsLoggedIn
       // Form for submitting a movie review
       form(id='reviewForm', method='POST', action='/submitReview')
-        label(for='reviewInput') Your Review:
-        textarea(id='reviewInput' name='reviewText' rows='4' cols='50')
+        input(type='hidden', name='movieName', value=chosen[0].Title)
+        div(style='display: flex;justify-content: space-evenly;color: black;')
+          label(for='reviewInput') Your Review:
+          textarea(id='reviewInput' name='reviewText' rows='4' cols='50')
         br
-        button(type='submit') Submit Review
+        div(style='display: flex;color: black;justify-content: left;margin-left: 24px;')
+          label(for='ratingInput') Your Rating (1-5):
+          input(id='ratingInput' type='number' name='rating' min='1' max='5')
+        br
+        button.btn(type='submit' ) Submit Review
+
     else
       p(style='color: red;margin:20px;') Please log in to submit a review.
 
