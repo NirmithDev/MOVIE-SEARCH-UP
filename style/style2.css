@@ -54,7 +54,7 @@ h1{
     margin: 20px;
 }
 
-#submit_rev,#year_release,#poster,#duration,#genre,#plot,#actor,#name{
+#submit_rev,#year_release,#poster,#duration,#genre,#plot,#actor,#name,#rated{
     background-color: #eda1a16e;
 }
 ::placeholder {

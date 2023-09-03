@@ -20,6 +20,25 @@ app.use(express.static("public"));
 app.use('/css',express.static(__dirname+'/style'))
 //you can add a much more bigger data file or append this and remove all duplicates
 let data=require('./movie-data.json')
+
+const uniqueGenres = new Set();
+const allRatings = data.map(movie => movie.Rated);
+const uniqueRatingsSet = new Set(allRatings);
+const uniqueRatings = Array.from(uniqueRatingsSet);
+
+console.log(uniqueRatings);
+// Iterate through the data and collect unique genres
+data.forEach(movie => {
+  if (movie.Genre && Array.isArray(movie.Genre)) {
+    movie.Genre.forEach(genre => {
+      uniqueGenres.add(genre);
+    });
+  }
+});
+
+// Convert the Set to an array if needed
+const uniqueGenresArray = [...uniqueGenres];
+
 //console.log(data.length)
 let dataUpdate=[]
 for(a=0;a<data.length;a++){
@@ -161,7 +180,7 @@ app.get('/actors/:aid',getActorDetails)
 //get page to load the add page
 //needs authentication verification and only admin people should have access to it
 app.get('/addMovie',(req,res)=>{
-    res.status(200).render('addMovie');
+    res.status(200).render('addMovie',{genreList:uniqueGenresArray,ratedData:uniqueRatings});
 })
 
 //store registered users
@@ -240,16 +259,39 @@ app.post('/submitReview', (req, res) => {
 //adding post request to append and add a new movie to the original list
 app.post('/addNewMovie',(req,res)=>{
     console.log(req.body)
-    const name      = req.body.movieName;
-    const plot      = req.body.plot;
-    const actor     = req.body.actors;
-    const genre     = req.body.genre;
-    const duration  = req.body.duration;
-    const year      = req.body.releaseYear;
-    const image     = req.body.posterLink;
+    const name          = req.body.movieName;
+    const plot          = req.body.plot;
+    const actor         = req.body.actors;
+    const genre         = req.body.genre;
+    const duration      = req.body.duration+" min";
+    const year          = req.body.releaseYear;
+    const image         = req.body.posterLink;
+    const awards        = req.body.awards;
+    const writer        = req.body.writer;
+    const director      = req.body.director;
+    const releasedDate  = req.body.releasedDate;
+    const rated         = req.body.rated;
     //create an object to represent movie data
+    const newMovie = {
+        Title: name,
+        Year: year,
+        Rated: rated, // need a new input
+        Released: releasedDate, // need a new input
+        Runtime: duration,
+        Genre: [genre],
+        Director: director.split(',').map(directorName => directorName.trim()), //need a new input
+        Writer: writer.split(',').map(writerName => writerName.trim()), //need a new input
+        Actors: actor.split(',').map(actorName => actorName.trim()), // Split actors by comma and trim spaces
+        Plot: plot,
+        Awards: awards,
+        Poster: image,
+        reviews: []
+    };
+    console.log(newMovie)
+    dataUpdate.push(newMovie)
+    const lastMovieAdded = dataUpdate[dataUpdate.length - 1];
+    console.log(lastMovieAdded)
     //push to original collection
-    
     const loggedIn = req.session.user && req.session.user.loggedIn;
     console.log(loggedIn)
     res.status(200).render('home', { movies: dataUpdate, isLoggedIn: loggedIn });
@@ -295,7 +337,7 @@ function getMovieDetails(req,res){
     const loggedIn = req.session.user && req.session.user.loggedIn;
     console.log(loggedIn)
     console.log(chosenOne)
-    console.log(chosenOne[0].reviews)
+    //console.log(chosenOne[0].reviews)
     //calculate average rating if there is else set the rating to N/A
     if(chosenOne[0].reviews.length>0){
         sum=0;
@@ -325,14 +367,17 @@ function getSimilarMovies(movName){
     }
     lm=0
     for(a=0;a<dataUpdate.length;a++){
+        //console.log(dataUpdate[a])
         if(dataUpdate[a].Title!=movName){
-            for(d=0;d<dataUpdate[a].Genre.length;d++){
-                //console.log(dataUpdate[a].Title)
-                if(sim.length<4){
-                    if(k[0].Genre.includes(dataUpdate[a].Genre[d])){
-                        //if(sim.includes(dataUpdate[a]))
-                        if(sim.includes(dataUpdate[a])<1 && sim.length<5){
-                            sim.push(dataUpdate[a]);
+            if(dataUpdate[a].Genre.length>0){
+                for(d=0;d<dataUpdate[a].Genre.length;d++){
+                    //console.log(dataUpdate[a].Title)
+                    if(sim.length<4){
+                        if(k[0].Genre.includes(dataUpdate[a].Genre[d])){
+                            //if(sim.includes(dataUpdate[a]))
+                            if(sim.includes(dataUpdate[a])<1 && sim.length<5){
+                                sim.push(dataUpdate[a]);
+                            }
                         }
                     }
                 }
