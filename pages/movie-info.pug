@@ -14,6 +14,9 @@ div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255,
   br
   .Title #{chosen[0].Title}
   br
+  form(action='/EditMovie' method='POST')
+    button.btn.edit-button(type='submit', style='cursor:pointer;') Edit Movie
+  br
   form(action='/addToWatchLater', method='POST')
     input(type='hidden', name='movieName', value=chosen[0].Title)
     button.btn.watch-later-button(type='submit' style='cursor:pointer;' ) Add to Watch Later

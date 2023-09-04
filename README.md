@@ -28,7 +28,7 @@ I am just messing with ya the cat won't let me live if I said no to it but anywa
 - add an extra step in registration to set user to admin or a normal user
 - final step is to add a add to watch later button that will be stored in user's profile
 
-# next steps
+# Next steps
 
 - add edit movie details functionality
 - search up other user's functionality
