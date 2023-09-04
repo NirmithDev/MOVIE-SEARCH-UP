@@ -151,11 +151,13 @@ app.get('/profile',function(req,res){
         const username = req.session.user.username;
         const password = req.session.user.password;
         const userLoggedIn = true;
+        const userType = req.session.user.userType;
         const userSearchData = req.session.user.userSessionSearchHist;
-        console.log(userSearchData)
+        console.log(userType)
         console.log(username)
         console.log(password)
-        res.status(200).render('profile',{ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn});
+
+        res.status(200).render('profile',{userType:userType,ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn});
       } else {
         // No session: user is not logged in
         res.redirect('/login');
@@ -180,7 +182,27 @@ app.get('/actors/:aid',getActorDetails)
 //get page to load the add page
 //needs authentication verification and only admin people should have access to it
 app.get('/addMovie',(req,res)=>{
-    res.status(200).render('addMovie',{genreList:uniqueGenresArray,ratedData:uniqueRatings});
+    console.log(req.session)
+    if(req.session.user){
+        if(req.session.user.userType!=="user"){
+            res.status(200).render('addMovie',{genreList:uniqueGenresArray,ratedData:uniqueRatings});
+        }else{
+            const ip2 = ip.address();
+            const username = req.session.user.username;
+            const password = req.session.user.password;
+            const userLoggedIn = true;
+            const userType = req.session.user.userType;
+            const userSearchData = req.session.user.userSessionSearchHist;
+            console.log(userType)
+            console.log(username)
+            console.log(password)
+            res.status(200).render('profile',{userType:userType,ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn});
+        }
+        //res.status(200).render('addMovie',{genreList:uniqueGenresArray,ratedData:uniqueRatings});
+    }
+    else{
+        res.render('login', { error: 'YOU MUST BE LOGGED IN' });
+    }
 })
 
 //store registered users
@@ -190,6 +212,7 @@ const registeredUsers ={};
 app.post('/login',(req,res)=>{
     const username = req.body.username;
     const password = req.body.password;
+    
     const userSessionSearchHist = [];
     //console.log(username)
     //console.log(password)
@@ -207,7 +230,8 @@ app.post('/login',(req,res)=>{
             username,
             password,
             userSessionSearchHist,
-            loggedIn: true
+            loggedIn: true,
+            userType:user.userType,
         };
         console.log(req.session)
         res.redirect('/profile');
@@ -216,14 +240,16 @@ app.post('/login',(req,res)=>{
     }
 })
 
-app.post('/register',(req,res) => {
+app.post('/register', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    const searchHist =[]
-    //console.log(req)
+    const userType = req.body.role; // Assuming you have a form field with the name 'role'
+    const searchHist = [];
+
     if (res.statusCode === 200) {
         registeredUsers[username] = {
             username,
+            userType, // Store userType during registration
             password,
             searchHist
         };
@@ -231,7 +257,8 @@ app.post('/register',(req,res) => {
     } else {
         res.send('Registration failed');
     }
-})
+});
+
 
 //movieReviews
 app.post('/submitReview', (req, res) => {
