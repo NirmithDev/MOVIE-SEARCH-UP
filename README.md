@@ -26,12 +26,13 @@ I am just messing with ya the cat won't let me live if I said no to it but anywa
 - next to do is add reviews for movies and stuff
 - set add movies to admin only
 - add an extra step in registration to set user to admin or a normal user
+- final step is to add a add to watch later button that will be stored in user's profile
 
 # next steps
 
-- final step is to add a add to watch later button that will be stored in user's profile
-- code if possible the reply to each comment
 - add edit movie details functionality
 - search up other user's functionality
 - add follow user to list functionality for all user's
+- code if possible the reply to each comment
+- add notification system if possible
 - if time available incorporate databases

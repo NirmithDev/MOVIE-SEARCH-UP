@@ -33,6 +33,12 @@ if loggedIn
               a(href=`/movies/${a.Title}`)
                 img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
   div(style='margin: 10px;')
+    p USERS WATCH LATER
+    .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
+      each a in watchLaterList 
+        div 
+        | #{a.title}
+  div(style='margin: 10px;')
     p USERS INPUT HISTORY
     .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
       for a in userinp 

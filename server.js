@@ -156,8 +156,11 @@ app.get('/profile',function(req,res){
         console.log(userType)
         console.log(username)
         console.log(password)
-
-        res.status(200).render('profile',{userType:userType,ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn});
+        const uniqueMovies = watchLaterList.filter((movie, index, self) =>
+            index === self.findIndex((m) => m.title === movie.title)
+        );
+        console.log(uniqueMovies)
+        res.status(200).render('profile',{userType:userType,ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn,watchLaterList:uniqueMovies});
       } else {
         // No session: user is not logged in
         res.redirect('/login');
@@ -207,6 +210,21 @@ app.get('/addMovie',(req,res)=>{
 
 //store registered users
 const registeredUsers ={};
+
+//adding post request to handle watch later
+const watchLaterList = [];
+app.post('/addToWatchLater', (req, res) => {
+    //check if user is logged in
+    if(req.session.user ){
+        const movieTitle = req.body.movieName;
+        console.log(movieTitle)
+        watchLaterList.push({ title: movieTitle});
+        console.log(watchLaterList)
+        res.redirect(`/movies/${movieTitle}`);
+    }else{
+        res.render('login', { error: 'YOU MUST BE LOGGED IN' });
+    }
+});
 
 //adding post requests to handle user inputs
 app.post('/login',(req,res)=>{
