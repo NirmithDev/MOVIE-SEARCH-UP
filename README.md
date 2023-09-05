@@ -18,6 +18,11 @@
 
 I am just messing with ya the cat won't let me live if I said no to it but anyway give credit and stay groovy!!!!
 
+This project is a continous work of integration and updates! Unfortunately I have to put a break since I am heading into my final year semesters and it is all or nothing
+I thank you all and you can feel free to work on the issues opened when you feel like it!
+
+I will resume this project when I am free so maybe during Christmas break and Winter semester end break!
+
 # Update functionality
 
 - search and store in viewer's history (will work on making it based on sessions so that not all user's will get based on it)
@@ -30,7 +35,7 @@ I am just messing with ya the cat won't let me live if I said no to it but anywa
 
 # Next steps
 
-- add edit movie details functionality
+- needs the backend functionality to update the movie data (Edit functionality)
 - search up other user's functionality
 - add follow user to list functionality for all user's
 - code if possible the reply to each comment
