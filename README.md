@@ -40,4 +40,4 @@ I will resume this project when I am free so maybe during Christmas break and Wi
 - add follow user to list functionality for all user's
 - code if possible the reply to each comment
 - add notification system if possible
-- if time available incorporate databases
+- incorporate databases and enable editing into DB
