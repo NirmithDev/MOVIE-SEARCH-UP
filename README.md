@@ -32,12 +32,12 @@ I will resume this project when I am free so maybe during Christmas break and Wi
 - set add movies to admin only
 - add an extra step in registration to set user to admin or a normal user
 - final step is to add a add to watch later button that will be stored in user's profile
+- needs the backend functionality to update the movie data (Edit functionality)
 
 # Next steps
 
-- needs the backend functionality to update the movie data (Edit functionality)
 - search up other user's functionality
 - add follow user to list functionality for all user's
 - code if possible the reply to each comment
-- add notification system if possible
 - incorporate databases and enable editing into DB
+- add notification system if possible

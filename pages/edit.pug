@@ -1,0 +1,39 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  link(rel='stylesheet' href='/css/style2.css')
+  link(rel='stylesheet' href='/css/style.css')
+  link(rel='stylesheet' href='/css/style3.css')
+  link(rel='stylesheet' href='/css/style4.css')
+  link(href='https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap' rel='stylesheet')
+  title Edit Movie Details
+// NavBar
+header
+  nav
+    ul.nav_links
+      a(href='/movies/'+movieName)
+        li#link Back to movie?
+// The add movie stuff which allows the user to throw in his opinions
+div 
+  if p
+    p #{p}
+div
+  // Movie info
+  #movie_Container
+    // Maybe create a form
+    #reviews(style='height: 40%;width: 100%; padding-top: 5px;')
+      form(method="POST" action="/updateMovie/"+movieName)
+        input#name(type='text' name='name' placeholder='Enter new name of the movie' style='background-color: #eda1a16e; height: 60px; width: 30%; margin-top: 5px;')
+        input#plot(type='text' name='plot' placeholder='Enter plot of the movie' style=' background-color: #eda1a16e;height: 60px; width: 99%; margin-top: 5px;')
+        input#director(type='text' name='director' placeholder='Enter director (add commas to separate even for 1)' style=' background-color: #eda1a16e;height: 60px; width: 99%; margin-top: 5px;')
+        input#writer(type='text' name='writer' placeholder='Enter writer (add commas to separate even for 1)' style=' background-color: #eda1a16e;height: 60px; width: 99%; margin-top: 5px;')
+        input#actor(type='text' name='actor' placeholder='Enter actors (add commas to separate even for 1)' style=' background-color: #eda1a16e;height: 60px; width: 99%; margin-top: 5px;')
+        input#genre(type='text' name='genre' placeholder='Enter genre of the movie (add commas to separate)' style=' background-color: #eda1a16e;height: 60px; width: 99%; margin-top: 5px;')
+        input#duration(type='text' name='duration' placeholder='Enter duration' style=' background-color: #eda1a16e;height: 60px; width: 99%; margin-top: 5px;')
+        input#year_release(type='text' name='year_release' placeholder='Enter year of release' style=' background-color: #eda1a16e;height: 60px; width: 99%; margin-top: 5px;')
+        input#year(type='text' name='year' placeholder='Enter year of release' style='background-color: #eda1a16e; height: 60px; width: 99%; margin-top: 5px;')
+        input#rated(type='text' name='rated' placeholder='Enter Rated' style='background-color: #eda1a16e; height: 60px; width: 99%; margin-top: 5px;')
+        input#poster(type='text' name='poster' placeholder='Enter poster link' style=' background-color: #eda1a16e;height: 60px; width: 99%; margin-top: 5px;')
+        input#awards(type='text' name='awards' placeholder='Enter Awards' style='background-color: #eda1a16e; height: 60px; width: 99%; margin-top: 5px;')
+        button#submit_rev(type='submit' style='float: right; border-radius: 10px; height: 40px; width: 100px; outline: none; margin: 20px;') Add Movie

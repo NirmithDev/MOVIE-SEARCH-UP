@@ -37,7 +37,8 @@ if loggedIn
     .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
       each a in watchLaterList 
         div 
-        | #{a.title}
+          a(href=`/movies/${a.title}`)
+            p #{a.title}
   div(style='margin: 10px;')
     p USERS INPUT HISTORY
     .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')

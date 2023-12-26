@@ -78,33 +78,36 @@ app.use(session({
 //Actors
 //Directors
 //Writer
-let Actors=dataUpdate[0].Writer;
-//console.log(dataUpdate[0])
-let acttes=[]
-for(let a=0;a<Actors.length;a++){
-    acttes.push(Actors[a])
-}
-//console.log(acttes)
+let Actors,acttes,act,writer,director;
+function getActData(){
+    Actors=dataUpdate[0].Writer;
+    //console.log(dataUpdate[0])
+    acttes=[]
+    for(let a=0;a<Actors.length;a++){
+        acttes.push(Actors[a])
+    }
+    //console.log(acttes)
 
-let act=[]
-for(a=0;a<dataUpdate.length;a++){
-    //Actors
-    let Actors=dataUpdate[a].Actors
-    for(let b=0;b<Actors.length;b++){
-        act.push(Actors[b]+ ' (Actor)')
-    } 
-    //Writers
-    let writer=dataUpdate[a].Writer
-    for(let b=0;b<writer.length;b++){
-        act.push(writer[b]+ ' (Writer)')
+    act=[]
+    for(a=0;a<dataUpdate.length;a++){
+        //Actors
+        Actors=dataUpdate[a].Actors
+        for(let b=0;b<Actors.length;b++){
+            act.push(Actors[b]+ ' (Actor)')
+        } 
+        //Writers
+        writer=dataUpdate[a].Writer
+        for(let b=0;b<writer.length;b++){
+            act.push(writer[b]+ ' (Writer)')
+        }
+        //act=[...new Set(act)]   
+        //Directors 
+        director=dataUpdate[a].Director
+        for(b=0;b<director.length;b++){
+            act.push(director[b]+ ' (Director)')
+        }
+        act=[...new Set(act)]  
     }
-    //act=[...new Set(act)]   
-    //Directors 
-    let director=dataUpdate[a].Director
-    for(b=0;b<director.length;b++){
-        act.push(director[b]+ ' (Director)')
-    }
-    act=[...new Set(act)]  
 }
 
 //console.log(act.length)
@@ -115,6 +118,7 @@ app.set('view engine', 'pug');
 
 app.get('/',(req,res)=>{
     //console.log(dataUpdate.length)
+    getActData()
     const loggedIn = req.session.user && req.session.user.loggedIn;
     console.log(loggedIn)
     res.status(200).render('home', { movies: dataUpdate, isLoggedIn: loggedIn });
@@ -180,6 +184,17 @@ app.get('/register',function(req,res){
 app.get('/searchMov',searchMov)
 app.get('/searchPeep',searchPeep)
 app.get('/movies/:mid',getMovieDetails)
+
+app.get('/movies/:mid/EditMovie',function(req,res){
+    if(req.session.user){
+        if(req.session.user.userType!=="user"){
+            res.status(200).render('edit',{movieName:req.params.mid})
+        }else{
+            res.status(200).render('movie-info',{chosen:chosenOne,similar:simi,userIsLoggedIn:loggedIn,averageRating:averageRating})
+        }
+    }
+})
+
 app.get('/actors/:aid',getActorDetails)
 
 //get page to load the add page
@@ -340,6 +355,36 @@ app.post('/addNewMovie',(req,res)=>{
     const loggedIn = req.session.user && req.session.user.loggedIn;
     console.log(loggedIn)
     res.status(200).render('home', { movies: dataUpdate, isLoggedIn: loggedIn });
+})
+
+//edit movie details
+app.post('/updateMovie/:mid',(req,res)=>{
+    //ONLY IS USER IS LOGGED IN AND USER IS AN ADMIN
+    console.log(req.params.mid)
+    console.log(req.params)
+    console.log(req.body)
+    for(b=0;b<dataUpdate.length;b++){
+        if(dataUpdate[b].Title==req.params.mid){
+            dataUpdate[b].Title = req.body.name !=="" ? req.body.name : dataUpdate[b].Title
+            dataUpdate[b].Year = req.body.year !==""? req.body.year : dataUpdate[b].Year
+            dataUpdate[b].Rated = req.body.rated !== ""? req.body.rated : dataUpdate[b].Rated
+            dataUpdate[b].Released = req.body.year_release !== ""?req.body.year_release : dataUpdate[b].Realeased
+            dataUpdate[b].Runtime = req.body.duration!==""?req.body.duration : dataUpdate[b].Runtime
+            dataUpdate[b].Genre = req.body.genre!==''? req.body.genre.split(',') :dataUpdate[b].Genre
+            dataUpdate[b].Actors = req.body.actor!==''? req.body.actor.split(',') : dataUpdate[b].Actors
+            dataUpdate[b].Director = req.body.director!==''? req.body.director.split(',') : dataUpdate[b].Director
+            dataUpdate[b].Writer = req.body.writer!==''? req.body.writer.split(',') : dataUpdate[b].Writer
+            dataUpdate[b].Plot = req.body.plot!==""?req.body.plot:dataUpdate[b].Plot
+            dataUpdate[b].Awards = req.body.awards!==""?req.body.awards:dataUpdate[b].Awards
+            dataUpdate[b].Poster = req.body.poster!==""?req.body.poster:dataUpdate[b].Poster
+        }
+    }
+    console.log(req.params.mid)
+    if(req.body.name!==""){
+        res.status(200).render('edit',{movieName:req.body.name,p:"Movie Updated"})
+    }else{
+        res.status(200).render('edit',{movieName:req.params.mid,p:"Movie Updated"})
+    }
 })
 
 //take in the input for the movie name

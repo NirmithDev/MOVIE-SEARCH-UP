@@ -14,13 +14,15 @@ div(style='margin: 10px;border: 3px solid white;background-color: rgba(255, 255,
   br
   .Title #{chosen[0].Title}
   br
-  form(action='/EditMovie' method='POST')
-    button.btn.edit-button(type='submit', style='cursor:pointer;') Edit Movie
-  br
-  form(action='/addToWatchLater', method='POST')
-    input(type='hidden', name='movieName', value=chosen[0].Title)
-    button.btn.watch-later-button(type='submit' style='cursor:pointer;' ) Add to Watch Later
-  br
+  div(style='display:flex;justify-content:center;')
+    if userIsLoggedIn
+      form(action=`/movies/`+chosen[0].Title+`/EditMovie` method='GET')
+        button.btn.edit-button(type='submit', style='cursor:pointer;') Edit Movie
+      br
+    form(action='/addToWatchLater', method='POST')
+      input(type='hidden', name='movieName', value=chosen[0].Title)
+      button.btn.watch-later-button(type='submit' style='cursor:pointer;' ) Add to Watch Later
+    br
   .movie_img_Main
     img(src=chosen[0].Poster alt=chosen[0].Title width='300' height='450' style='border-radius: 10px;display: block;margin-left: auto;margin-right: auto;')
   br
