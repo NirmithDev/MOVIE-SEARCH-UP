@@ -38,6 +38,7 @@ I will resume this project when I am free so maybe during Christmas break and Wi
 
 - search up other user's functionality
 - add follow user to list functionality for all user's
+- add Follow Director/ Writer/ Actor as well
 - code if possible the reply to each comment
 - incorporate databases and enable editing into DB
 - add notification system if possible
