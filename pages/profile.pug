@@ -16,6 +16,8 @@ a(href='/')
 if loggedIn
   a(href='/logout')
     input.button(type='button' value='LOGOUT')
+a(href='/userLookup')
+  input.button(type='button' value='LOOKUP USERS')
 .name
   p(style='padding-bottom: 10px;') Username: #{username}
   p(style='padding-bottom: 10px;') Password: #{password}

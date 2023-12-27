@@ -1,0 +1,28 @@
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title SEARCH PEOPLE
+  link(rel='stylesheet' href='/css/style4.css')
+  link(rel='preconnect' href='https://fonts.gstatic.com')
+  link(href='https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap' rel='stylesheet')
+// LOGO
+h1
+  a(href='/' style='text-decoration: none;') PEOPLE LOOKUP
+
+//button to movie lookup
+a(href='/')
+  input.button(type='button' value='Home')
+
+// SEARCH OPTION
+// Use Forms
+.searchBox
+    form(method="GET" action="/searchPeep")
+      input.searchMov(type='text' name="searchPeople" placeholder="Enter name of person" style='color: black;')
+      input.searchButton(type='submit' value='Submit')
+// Container with all people name's that are first defaulted into it and then we take in the input
+.allPeeps
+  for b in name
+    a(href='/users/'+b style="text-decoration:none;")
+      .name(style='padding: 22px;') #{b}
+    
+// footer

@@ -19,7 +19,9 @@ app.use(express.static("public"));
 
 app.use('/css',express.static(__dirname+'/style'))
 //you can add a much more bigger data file or append this and remove all duplicates
-let data=require('./movie-data.json')
+let data=require('./movie-data.json');
+const { isUndefined } = require('util');
+const { register } = require('module');
 
 const uniqueGenres = new Set();
 const allRatings = data.map(movie => movie.Rated);
@@ -143,6 +145,21 @@ app.get('/actorLookup',(req,res)=>{
     res.status(200).render('actor_home',{name:act})
 })
 
+//create users and populate them
+
+app.get('/userLookup',(req,res)=>{
+    console.log(registeredUsers)
+    let a=[]
+    a.push(registeredUsers)
+    console.log(a)
+    const usernamesArray = [];
+    for (const obj of a) {
+        const usernames = Object.keys(obj);
+        usernamesArray.push(...usernames);
+    }
+    res.status(200).render('user_home',{name:usernamesArray})
+})
+
 app.get('/actorTest',function(req,res){
     res.status(200).render('actor')
 })
@@ -190,12 +207,28 @@ app.get('/movies/:mid/EditMovie',function(req,res){
         if(req.session.user.userType!=="user"){
             res.status(200).render('edit',{movieName:req.params.mid})
         }else{
-            res.status(200).render('movie-info',{chosen:chosenOne,similar:simi,userIsLoggedIn:loggedIn,averageRating:averageRating})
+            console.log(req.params)
+            getMovieDetails(req,res)
         }
     }
 })
 
 app.get('/actors/:aid',getActorDetails)
+
+app.get('/users/:uid',getUserDetails)
+
+function getUserDetails(req,res){
+    //get all data for particular user
+    console.log(req.params.uid)
+    //simple for loop or can we do better 
+    const a =registeredUsers[req.params.uid]
+    console.log(a)
+    if(a!=='undefined'){
+        res.status(200).render('usersData',{type:a.userType,name:a.username,searchHistory:a.searchHist});
+    }else{
+        searchPeep
+    }
+}
 
 //get page to load the add page
 //needs authentication verification and only admin people should have access to it
@@ -224,7 +257,24 @@ app.get('/addMovie',(req,res)=>{
 })
 
 //store registered users
-const registeredUsers ={};
+const registeredUsers ={
+    'Nirmith': {
+        username: 'Nirmith',
+        userType: 'user',
+        password: 'Nimmu@31',
+        searchHist: [],
+        watchLater:[],
+        reviews:[],
+    },
+    'Nirmith2': {
+        username: 'Nirmith2',
+        userType: 'admin',
+        password: 'Nimmu@31',
+        searchHist: [],
+        watchLater:[],
+        reviews:[],
+    }
+};
 
 //adding post request to handle watch later
 const watchLaterList = [];
@@ -235,6 +285,9 @@ app.post('/addToWatchLater', (req, res) => {
         console.log(movieTitle)
         watchLaterList.push({ title: movieTitle});
         console.log(watchLaterList)
+        console.log(req.session)
+        const a = registeredUsers[req.session.user.username]
+        a.
         res.redirect(`/movies/${movieTitle}`);
     }else{
         res.render('login', { error: 'YOU MUST BE LOGGED IN' });
@@ -247,6 +300,8 @@ app.post('/login',(req,res)=>{
     const password = req.body.password;
     
     const userSessionSearchHist = [];
+    const userWatchLater = [];
+    const userReviews = [];
     //console.log(username)
     //console.log(password)
     console.log(registeredUsers)
@@ -263,6 +318,8 @@ app.post('/login',(req,res)=>{
             username,
             password,
             userSessionSearchHist,
+            userWatchLater,
+            userReviews,
             loggedIn: true,
             userType:user.userType,
         };
@@ -284,7 +341,9 @@ app.post('/register', (req, res) => {
             username,
             userType, // Store userType during registration
             password,
-            searchHist
+            searchHist,
+            watchLater,
+            reviews,
         };
         res.redirect('/login');
     } else {
@@ -482,18 +541,27 @@ function getSimilarMovies(movName){
 //collabed with
 function searchPeep(req,res,next){
     //console.log("test passed")
+    
     let b= req.query.searchPeople;
     //console.log(b)
     b=b.toLowerCase()
     //userInput.push(b)
-    req.session.user.userSessionSearchHist.push(b);
-    let c=[];
-    for(a=0;a<act.length;a++){
-        if(act[a].toLowerCase().includes(b)){
-            c.push(act[a])
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    //console.log(loggedIn)
+    if(loggedIn){
+        req.session.user.userSessionSearchHist.push(b);
+    }
+    let searchResults = [];
+
+    for (const user in registeredUsers) {
+        const userData = registeredUsers[user];
+        
+        if (userData.username.toLowerCase().includes(b) || userData.userType.toLowerCase().includes(b)) {
+            searchResults.push(userData.username);
         }
     }
-    res.status(200).render('actor_home',{name:c})
+    console.log(searchResults)
+    res.status(200).render('user_home',{name:searchResults})
 }
 
 function getActorDetails(req,res,next){

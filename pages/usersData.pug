@@ -1,0 +1,48 @@
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Document
+  link(rel='stylesheet' href='/css/style3.css')
+  link(rel='preconnect' href='https://fonts.gstatic.com')
+  link(href='https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap' rel='stylesheet')
+// NAV BAR TO HOME PAGE
+h1
+  a(href='/actorLookup' style='text-decoration: none;') People LOOKUP
+// Name
+// Type Of Person
+// Movies Acted In
+// People They Collabed With
+div(style='margin: 10px;background-color: rgba(255,255,255,0.3); border-radius: 10px;')
+  .Name(style='padding: 10px')
+    b Name:
+    |  #{name}
+  br
+  .type(style='padding: 10px')
+    b Type:
+    |  #{type}
+  br
+  // Can Be Both For Like Acted In Or Directed Or Written
+  h2(style='padding-left: 10px;') Movie History for #{name} 
+  for a in searchHistory
+    // add linking to respective movies
+    p(style='font-size:30px; padding-left:10px') 
+      |  &#x261E 
+    .ActedIn(style='padding: 10px')
+      a(href='/movies/'+a style="text-decoration:none;") &#x261E #{a}
+  br
+  h2(style='padding-left: 10px;') Users that follow this user
+  .Collabed(style='padding: 10px;')
+    //for a in collab
+      a(style="text-decoration:none;" href="/actors/"+a) ++ #{a}
+      br
+    //| Leni Riefenstahl, Max Amann, Martin Bormann, Walter Buch
+  h2(style='padding-left: 10px;') Users that this user follows
+  .Collabed(style='padding: 10px;')
+  h2(style='padding-left: 10px;') User Reviews
+  .Collabed(style='padding: 10px;')
+  h2(style='padding-left: 10px;') User Watch Later
+  .Collabed(style='padding: 10px;')
+a(href='/')
+  input.button(type='button' value='Home')
+a(href='/userLookup')
+  input.button(type='button' value='Lookup')
