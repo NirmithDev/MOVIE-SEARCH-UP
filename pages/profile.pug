@@ -24,16 +24,6 @@ a(href='/userLookup')
   p(style='padding-bottom: 10px;') UserType: #{userType}
 // Viewing History
 .history
-  .his
-    div(style='text-align: center;align-items: center;display: flex;flex-direction: column;')
-      p(style='font-size: 40px;padding-top: 23px;') VIEWER HISTORY
-      .mov_hist
-        - if (movieHist)
-          - const movieHistArray = Array.from(movieHist)
-          for a in movieHistArray
-            .movie_img1
-              a(href=`/movies/${a.Title}`)
-                img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
   div(style='margin: 10px;')
     p USERS WATCH LATER
     .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
@@ -41,12 +31,39 @@ a(href='/userLookup')
         div 
           a(href=`/movies/${b}`)
             p #{b}
-  //div(style='margin: 10px;')
-    p USERS INPUT HISTORY
+  div(style='margin: 10px;')
+    p USERS Reviews
     .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
-      for a in userinp 
+      each b in reviews 
         div 
-        | #{a}
+          a(href=`/movies/${b.MovieName}`)
+            p #{b.MovieName} Rated #{b.Rating}
+  div(style='display: flex;justify-content: space-evenly;width: 100%;')
+    div(style='width: 300px;height: 100%;')
+      p USERS FOLLOWERS
+      .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
+        each b in followers 
+          div 
+            a(href=`/users/${b}`)
+              p #{b}
+    div(style='width: 300px;height: 100%;')
+      p USERS FOLLOWS
+      .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
+        each b in follows 
+          div 
+            a(href=`/users/${b}`)
+              p #{b}
+  .his
+    div(style='display: flex;flex-direction: column; justify-content:center;')
+      p(style='padding-top: 23px;') VIEWER HISTORY
+      .mov_hist
+        - if (movieHist)
+          - const movieHistArray = Array.from(movieHist)
+          for a in movieHistArray
+            .movie_img1
+              a(href=`/movies/${a.Title}`)
+                img(src=a.Poster alt='img' width='400' height='450' style='border-radius: 10px;')
+  
       
 div
   .location

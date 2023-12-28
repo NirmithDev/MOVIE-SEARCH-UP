@@ -24,7 +24,7 @@
     flex-wrap: wrap;
     overflow: auto;
     height: 400px;
-    margin: 32px;
+    margin: 32px 0;
     background-color: hsl(0deg 15% 49%);
     border-radius: 10px;
 }

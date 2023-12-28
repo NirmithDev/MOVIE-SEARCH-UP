@@ -32,17 +32,32 @@ div(style='margin: 10px;background-color: rgba(255,255,255,0.3); border-radius: 
   br
   h2(style='padding-left: 10px;') Users that follow this user
   .Collabed(style='padding: 10px;')
-    //for a in collab
-      a(style="text-decoration:none;" href="/actors/"+a) ++ #{a}
-      br
-    //| Leni Riefenstahl, Max Amann, Martin Bormann, Walter Buch
+    if followers && followers.length > 0
+      for fol in followers
+        a(href='/users/'+fol) 
+          p #{fol}
   h2(style='padding-left: 10px;') Users that this user follows
   .Collabed(style='padding: 10px;')
+    if follows && follows.length > 0
+      for fol in follows
+        a(href='/users/'+fol) 
+          p #{fol}
   h2(style='padding-left: 10px;') User Reviews
   .Collabed(style='padding: 10px;')
+    if reviews && reviews.length > 0
+      for fol in reviews
+        a(href='/movies/'+fol.MovieName) 
+          p #{fol}
   h2(style='padding-left: 10px;') User Watch Later
   .Collabed(style='padding: 10px;')
+    if watchLater && watchLater.length >0
+      for fol in watchLater
+        a(href='/movies/'+fol) 
+          p #{fol}
 a(href='/')
   input.button(type='button' value='Home')
 a(href='/userLookup')
   input.button(type='button' value='Lookup')
+if logged
+  form(id='reviewForm', method='POST', action='/follow/'+name)
+    button.button(type='submit' ) Follow

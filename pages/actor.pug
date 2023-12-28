@@ -40,3 +40,6 @@ a(href='/')
   input.button(type='button' value='Home')
 a(href='/actorLookup')
   input.button(type='button' value='Lookup')
+if logged
+  form(id='reviewForm', method='POST', action='/followActor/'+name)
+    button.button(type='submit' ) Follow

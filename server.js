@@ -163,6 +163,7 @@ app.get('/movieInfo',(req,res)=>{
 })
 
 app.get('/actorLookup',(req,res)=>{
+    console.log(act)
     res.status(200).render('actor_home',{name:act})
 })
 
@@ -199,18 +200,10 @@ app.get('/profile',function(req,res){
         const movieHist = req.session.user.userViewHist
         const watchLaterList2 = registeredUsers[req.session.user.username]
         console.log("--------------------------------------")
-        console.log(watchLaterList2)
-        /*const uniqueMovies = Array.from(
-            watchLaterList2
-              .reduce((map, movie) => {
-                map.set(movie.title, movie);
-                return map;
-              }, new Map())
-              .values()
-          );*/
-          
+        console.log(watchLaterList2)          
         //console.log(uniqueMovies)
-        res.status(200).render('profile',{userType:userType,ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn,watchLaterList:watchLaterList2.watchLater});
+        const reviews = watchLaterList2.reviews
+        res.status(200).render('profile',{userType:userType,ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn,watchLaterList:watchLaterList2.watchLater,reviews:reviews,follows:watchLaterList2.follows,followers:watchLaterList2.followers});
       } else {
         // No session: user is not logged in
         res.redirect('/login');
@@ -249,11 +242,15 @@ app.get('/users/:uid',getUserDetails)
 function getUserDetails(req,res){
     //get all data for particular user
     console.log(req.params.uid)
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    console.log(loggedIn)
     //simple for loop or can we do better 
     const a =registeredUsers[req.params.uid]
     console.log(a)
+    //get and send all data in here
+    console.log(a)
     if(a!=='undefined'){
-        res.status(200).render('usersData',{type:a.userType,name:a.username,searchHistory:a.searchHist});
+        res.status(200).render('usersData',{type:a.userType,name:a.username,searchHistory:a.searchHist,logged:loggedIn,follows:a.follows,followers:a.followers,reviews:a.reviews,watchLater:a.watchLater,hist:a.viewHist});
     }else{
         searchPeep
     }
@@ -295,7 +292,9 @@ const registeredUsers ={
         searchHist: [],
         watchLater:[],
         reviews:[],
-        viewHist:[]
+        viewHist:[],
+        follows:[],
+        followers:[]
     },
     'Nirmith2': {
         username: 'Nirmith2',
@@ -304,7 +303,9 @@ const registeredUsers ={
         searchHist: [],
         watchLater:[],
         reviews:[],
-        viewHist:[]
+        viewHist:[],
+        follows:[],
+        followers:[]
     }
 };
 
@@ -370,6 +371,8 @@ app.post('/register', (req, res) => {
     const watchLater = [];
     const reviews = [];
     const viewHist = [];
+    const follows = [];
+    const followers =[];
     if (res.statusCode === 200) {
         registeredUsers[username] = {
             username,
@@ -378,7 +381,9 @@ app.post('/register', (req, res) => {
             searchHist,
             watchLater,
             reviews,
-            viewHist
+            viewHist,
+            follows,
+            followers
         };
         res.redirect('/login');
     } else {
@@ -407,6 +412,11 @@ app.post('/submitReview', (req, res) => {
     }
     chosenOne[0].reviews.push({ Author: author, Rating: rating, Comment: reviewText });
     // Redirect to the movie details page
+    //start storing it based of sessions and user interction show it as a collection of Movies Reviewed and Rating Given
+    const user = registeredUsers[author];
+    console.log("------------------------")
+    console.log(user)
+    user.reviews.push({ Rating: rating, MovieName: movieName})
     res.redirect(`/movies/${movieName}`);
 });
 
@@ -677,8 +687,9 @@ function getActorDetails(req,res,next){
     //get the collaborated users for the shizzle
     collabed=getCollabed(nam,type,segregate);
     console.log(collabed)
+    const loggedIn = req.session.user && req.session.user.loggedIn;
     //render the actor page 
-    res.status(200).render('actor',{name:nam,type:type,cont:contri_name,collab:collabed});
+    res.status(200).render('actor',{name:nam,type:type,cont:contri_name,collab:collabed,logged:loggedIn});
 }
 
 function getCollabed(name_person,type,segregate){
@@ -716,6 +727,45 @@ function getCollabed(name_person,type,segregate){
     
     return collabArr
 }
+
+//post request to add followers
+app.post('/follow/:uid',(req,res)=>{
+    console.log(req.params)
+    if(req.params.uid !== req.session.user.username){
+        const loggedIn = req.session.user && req.session.user.loggedIn;
+        console.log(loggedIn)
+        //follows 
+        const a = registeredUsers[req.session.user.username]
+        console.log("----------------follows")
+        console.log(a)
+        a.follows.push(req.params.uid)
+        console.log("----------------follows updated")
+        console.log(registeredUsers)
+        //updated followers of users our authenticated user has done
+        const b = registeredUsers[req.params.uid]
+        b.followers.push(req.session.user.username)
+        res.status(200).render('usersData',{type:b.userType,name:b.username,searchHistory:b.searchHist,logged:loggedIn});
+
+    }else{
+        searchPeep
+    }
+})
+
+app.post('/followActor/:aid',(req,res)=>{
+    console.log(req.params)
+
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    console.log(loggedIn)
+    //follows 
+    const a = registeredUsers[req.session.user.username]
+    console.log("----------------follows")
+    console.log(a)
+    a.follows.push(req.params.aid)
+    console.log("----------------follows updated")
+    console.log(registeredUsers)
+    //updated followers of users our authenticated user has done
+    res.status(200).render('actor_home',{name:act})
+})
 
 app.listen(3000)
 console.log("listening on port 3000")
