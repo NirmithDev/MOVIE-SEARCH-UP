@@ -63,10 +63,10 @@ for(a=0;a<data.length;a++){
     
     dataUpdate.push(movie)
 }
-let userInput=[]
-let movieHist=new Set();
+//let userInput=[]
+//let movieHist=new Set();
 //use to monitor people input in search bars
-let peopleData=[]
+//let peopleData=[]
 
 app.use(session({
     secret: 'ULTRABIGSECRETKEY',
@@ -128,6 +128,26 @@ app.get('/',(req,res)=>{
 
 app.get('/logout',(req,res)=>{
     //console.log(dataUpdate.length)
+    //console.log(req.session.user)
+    const userViewHistData = req.session.user.userViewHist;
+    //console.log(userViewHistData)
+    for(const a in userViewHistData){
+        /*console.log("HERE DATA")
+        console.log(registeredUsers[req.session.user.username])
+        console.log(userViewHistData[a])*/
+        registeredUsers[req.session.user.username].viewHist.push(userViewHistData[a])
+    }
+    for (const username in registeredUsers) {
+        if (registeredUsers[username]) {
+            const user = registeredUsers[username];
+
+            if (user && user.userViewHist && Array.isArray(userViewHistData)) {
+                user.viewHist = user.viewHist.concat(userViewHistData);
+            }
+        }
+    }
+    //console.log(registeredUsers)
+    //a.userViewHist = a.userViewHist.concat(req.session.user.userViewHist);
     req.session.destroy((err) => {
         if (err) {
           console.error('Error destroying session:', err);
@@ -168,20 +188,28 @@ app.get('/actorTest',function(req,res){
 app.get('/profile',function(req,res){
     const ip2 = ip.address();
     if (req.session.user && req.session.user.username) {
+        console.log(req.session.user)
         // Session exists: user is logged in
         const username = req.session.user.username;
         const password = req.session.user.password;
         const userLoggedIn = true;
         const userType = req.session.user.userType;
         const userSearchData = req.session.user.userSessionSearchHist;
-        console.log(userType)
-        console.log(username)
-        console.log(password)
-        const uniqueMovies = watchLaterList.filter((movie, index, self) =>
-            index === self.findIndex((m) => m.title === movie.title)
-        );
-        console.log(uniqueMovies)
-        res.status(200).render('profile',{userType:userType,ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn,watchLaterList:uniqueMovies});
+        const movieHist = req.session.user.userViewHist
+        const watchLaterList2 = registeredUsers[req.session.user.username]
+        console.log("--------------------------------------")
+        console.log(watchLaterList2)
+        /*const uniqueMovies = Array.from(
+            watchLaterList2
+              .reduce((map, movie) => {
+                map.set(movie.title, movie);
+                return map;
+              }, new Map())
+              .values()
+          );*/
+          
+        //console.log(uniqueMovies)
+        res.status(200).render('profile',{userType:userType,ip:ip2, userinp:userSearchData, movieHist:movieHist,username:username,password:password,loggedIn:userLoggedIn,watchLaterList:watchLaterList2.watchLater});
       } else {
         // No session: user is not logged in
         res.redirect('/login');
@@ -244,6 +272,7 @@ app.get('/addMovie',(req,res)=>{
             const userLoggedIn = true;
             const userType = req.session.user.userType;
             const userSearchData = req.session.user.userSessionSearchHist;
+            const movieHist = req.session.user.userViewHist
             console.log(userType)
             console.log(username)
             console.log(password)
@@ -265,6 +294,7 @@ const registeredUsers ={
         searchHist: [],
         watchLater:[],
         reviews:[],
+        viewHist:[]
     },
     'Nirmith2': {
         username: 'Nirmith2',
@@ -273,6 +303,7 @@ const registeredUsers ={
         searchHist: [],
         watchLater:[],
         reviews:[],
+        viewHist:[]
     }
 };
 
@@ -285,9 +316,10 @@ app.post('/addToWatchLater', (req, res) => {
         console.log(movieTitle)
         watchLaterList.push({ title: movieTitle});
         console.log(watchLaterList)
+        //req.session.user.userWatchLater({title: movieTitle})
         console.log(req.session)
         const a = registeredUsers[req.session.user.username]
-        a.
+        a.watchLater.push(movieTitle)
         res.redirect(`/movies/${movieTitle}`);
     }else{
         res.render('login', { error: 'YOU MUST BE LOGGED IN' });
@@ -298,20 +330,18 @@ app.post('/addToWatchLater', (req, res) => {
 app.post('/login',(req,res)=>{
     const username = req.body.username;
     const password = req.body.password;
-    
-    const userSessionSearchHist = [];
-    const userWatchLater = [];
-    const userReviews = [];
     //console.log(username)
     //console.log(password)
     console.log(registeredUsers)
     const user = registeredUsers[username];
-    //console.log(user)
-    //add authentication and session cookies
-    //if (res.statusCode === 200) {
+    console.log(user)
+    const userSessionSearchHist = user.searchHist;
+    const userWatchLater = user.watchLater;
+    const userViewHist = user.viewHist;
+    const userReviews = user.reviews;
     if (!user) {
             // User does not exist
-        res.render('login', { error: 'User does not exist' });
+        res.status(401).render('login', { error: 'User does not exist' });
     } else if (user.password === password) {
         //res.send('User present');
         req.session.user = {
@@ -320,6 +350,7 @@ app.post('/login',(req,res)=>{
             userSessionSearchHist,
             userWatchLater,
             userReviews,
+            userViewHist,
             loggedIn: true,
             userType:user.userType,
         };
@@ -335,7 +366,9 @@ app.post('/register', (req, res) => {
     const password = req.body.password;
     const userType = req.body.role; // Assuming you have a form field with the name 'role'
     const searchHist = [];
-
+    const watchLater = [];
+    const reviews = [];
+    const viewHist = [];
     if (res.statusCode === 200) {
         registeredUsers[username] = {
             username,
@@ -344,6 +377,7 @@ app.post('/register', (req, res) => {
             searchHist,
             watchLater,
             reviews,
+            viewHist
         };
         res.redirect('/login');
     } else {
@@ -476,16 +510,38 @@ function getMovieDetails(req,res){
     //now we are going to search for that movie
     //iterate thru the collection
     simi=getSimilarMovies(a);
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    console.log(loggedIn)
+    //let b;
+    const c =req.session.user
+    //if(loggedIn){
+    //    let b = req.session.user
+    //}
+    
+    console.log(chosenOne)
     for(b=0;b<dataUpdate.length;b++){
         if(dataUpdate[b].Title==a){
             chosenOne.push(dataUpdate[b])
-            movieHist.add(dataUpdate[b])
+            if(loggedIn){
+                const movieTitle = dataUpdate[b].Title;
+                const isUnique = !c.userViewHist.some(movie => movie.Title === movieTitle);
+
+                if (isUnique) {
+                    c.userViewHist.push(dataUpdate[b]);
+                }
+            }
         }
     }
+    console.log(c)
+    console.log(req.session.user)
+    /*req.session.save(err => {
+        if (err) {
+            console.error('Error saving session:', err);
+        } else {
+            console.log('Session updated and saved successfully.');
+        }
+    });*/
     //console.log(chosenOne)
-    const loggedIn = req.session.user && req.session.user.loggedIn;
-    console.log(loggedIn)
-    console.log(chosenOne)
     //console.log(chosenOne[0].reviews)
     //calculate average rating if there is else set the rating to N/A
     if(chosenOne[0].reviews.length>0){

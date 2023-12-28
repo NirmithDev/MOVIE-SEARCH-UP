@@ -37,11 +37,11 @@ a(href='/userLookup')
   div(style='margin: 10px;')
     p USERS WATCH LATER
     .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
-      each a in watchLaterList 
+      each b in watchLaterList 
         div 
-          a(href=`/movies/${a.title}`)
-            p #{a.title}
-  div(style='margin: 10px;')
+          a(href=`/movies/${b}`)
+            p #{b}
+  //div(style='margin: 10px;')
     p USERS INPUT HISTORY
     .user-input(style='margin-top: 10px;height: 200px;overflow-y: auto;')
       for a in userinp 
