@@ -130,12 +130,13 @@ app.get('/logout',(req,res)=>{
     //console.log(dataUpdate.length)
     //console.log(req.session.user)
     const userViewHistData = req.session.user.userViewHist;
+    const addToWatchLater2 = req.session.user.userWatchLater;
     //console.log(userViewHistData)
     for(const a in userViewHistData){
-        /*console.log("HERE DATA")
-        console.log(registeredUsers[req.session.user.username])
-        console.log(userViewHistData[a])*/
         registeredUsers[req.session.user.username].viewHist.push(userViewHistData[a])
+    }
+    for(const b in addToWatchLater2){
+        registeredUsers[req.session.user.username].watchLater.push(addToWatchLater2[b])
     }
     for (const username in registeredUsers) {
         if (registeredUsers[username]) {
@@ -146,7 +147,7 @@ app.get('/logout',(req,res)=>{
             }
         }
     }
-    //console.log(registeredUsers)
+    console.log(registeredUsers)
     //a.userViewHist = a.userViewHist.concat(req.session.user.userViewHist);
     req.session.destroy((err) => {
         if (err) {
