@@ -39,10 +39,11 @@ I will resume this project when I am free so maybe during Christmas break and Wi
 - add follow user to list functionality for all user's
 - add Follow Director/ Writer/ Actor as well
 - Fix and update users home page from search
+- add unfollow functionality as well for users as of now
 
 # Next steps
 
-- add unfollow functionality as well
+- UNFOLLOW ACTORS AND WRITERS FUNCTIONALITY
 - code if possible the reply to each comment including like, unlike and delete comment when from user
 - incorporate databases and enable editing into DB
 - add notification system if possible

@@ -59,5 +59,9 @@ a(href='/')
 a(href='/userLookup')
   input.button(type='button' value='Lookup')
 if logged
-  form(id='reviewForm', method='POST', action='/follow/'+name)
-    button.button(type='submit' ) Follow
+  if followed
+    form(id='reviewForm', method='POST', action='/unfollow/'+name)
+      button.button(type='submit' ) Unfollow
+  else 
+    form(id='reviewForm', method='POST', action='/follow/'+name)
+      button.button(type='submit' ) Follow

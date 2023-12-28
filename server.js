@@ -248,9 +248,21 @@ function getUserDetails(req,res){
     const a =registeredUsers[req.params.uid]
     console.log(a)
     //get and send all data in here
-    console.log(a)
+    //console.log(a)
+    //add a condition here that checks if the searched user is in our authenticated users database
+    // IF YES SET THE FOLLOW BUTTON TO FALSE AND ENABLE THE 
+    // IF NO SET THE FOLLOW BUTTON TO TRUE
     if(a!=='undefined'){
-        res.status(200).render('usersData',{type:a.userType,name:a.username,searchHistory:a.searchHist,logged:loggedIn,follows:a.follows,followers:a.followers,reviews:a.reviews,watchLater:a.watchLater,hist:a.viewHist});
+        let follows = false;
+        const follow = req.session.user.username;
+        const followUserData = registeredUsers[follow]
+        console.log("-------------------------")
+        console.log(followUserData)
+        if(loggedIn){
+            follows = followUserData.follows.some(user => user === req.params.uid);
+        }
+        console.log(follows)
+        res.status(200).render('usersData',{type:a.userType,name:a.username,searchHistory:a.searchHist,logged:loggedIn,follows:a.follows,followers:a.followers,reviews:a.reviews,watchLater:a.watchLater,hist:a.viewHist,followed:follows});
     }else{
         searchPeep
     }
@@ -341,6 +353,8 @@ app.post('/login',(req,res)=>{
     const userWatchLater = user.watchLater;
     const userViewHist = user.viewHist;
     const userReviews = user.reviews;
+    const follows = user.follows;
+    const followers = user.followers;
     if (!user) {
             // User does not exist
         res.status(401).render('login', { error: 'User does not exist' });
@@ -353,6 +367,8 @@ app.post('/login',(req,res)=>{
             userWatchLater,
             userReviews,
             userViewHist,
+            follows,
+            followers,
             loggedIn: true,
             userType:user.userType,
         };
@@ -744,7 +760,9 @@ app.post('/follow/:uid',(req,res)=>{
         //updated followers of users our authenticated user has done
         const b = registeredUsers[req.params.uid]
         b.followers.push(req.session.user.username)
-        res.status(200).render('usersData',{type:b.userType,name:b.username,searchHistory:b.searchHist,logged:loggedIn});
+        console.log("----------------Followers Updated")
+        console.log(registeredUsers)
+        res.status(200).redirect(`/users/${req.params.uid}`)
 
     }else{
         searchPeep
@@ -765,6 +783,29 @@ app.post('/followActor/:aid',(req,res)=>{
     console.log(registeredUsers)
     //updated followers of users our authenticated user has done
     res.status(200).render('actor_home',{name:act})
+})
+
+//unfollow this user should also technically work for actors and writers and directors re route to home page
+app.post('/unfollow/:uid',(req,res)=>{
+    console.log(req.params)
+    console.log(req.session.user)
+    //console.log(registeredUsers[req.params.uid])
+    const unfollow = registeredUsers[req.params.uid]
+    const activeUser = registeredUsers[req.session.user.username]
+    console.log("-----------------------------")
+    console.log(unfollow)
+    let spot = unfollow.followers.indexOf(req.session.user.username)
+    if(spot > -1) {
+        unfollow.followers.splice(spot,1)
+    }
+    let spot2 = activeUser.follows.indexOf(req.params.uid)
+    if(spot2 > -1) {
+        activeUser.follows.splice(spot2,1)
+    }
+    const loggedIn = req.session.user && req.session.user.loggedIn;
+    console.log(loggedIn)
+    //console.log(activeUser)
+    res.status(200).render('usersData',{type:unfollow.userType,name:unfollow.username,searchHistory:unfollow.searchHist,logged:loggedIn});
 })
 
 app.listen(3000)
