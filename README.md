@@ -43,6 +43,10 @@ I will resume this project when I am free so maybe during Christmas break and Wi
 # Next steps
 
 - add unfollow functionality as well
-- code if possible the reply to each comment
+- code if possible the reply to each comment including like, unlike and delete comment when from user
 - incorporate databases and enable editing into DB
 - add notification system if possible
+
+## Known Bugs
+
+- users search display page doesn't work well for linking it to the actors
